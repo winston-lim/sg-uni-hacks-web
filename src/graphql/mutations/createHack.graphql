@@ -1,0 +1,5 @@
+mutation CreateHack($input: CreateHackInput!) {
+	createHack(input: $input) {
+		RegularHack
+	}
+}

@@ -1,0 +1,3 @@
+mutation vote($hackId: String!, $value: Int!) {
+	vote(hackId: $hackId, value: $value)
+}

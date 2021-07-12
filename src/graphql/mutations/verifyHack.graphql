@@ -1,0 +1,5 @@
+mutation VerifyHack($id: String!) {
+	verifyHack(id: $id) {
+		RegularHack
+	}
+}

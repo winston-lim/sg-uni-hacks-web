@@ -1,0 +1,3 @@
+mutation DeleteHack($id: String!) {
+	deleteHack(id: $id)
+}

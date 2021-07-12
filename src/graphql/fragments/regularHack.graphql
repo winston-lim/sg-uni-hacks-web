@@ -1,0 +1,18 @@
+fragement RegularHack on Hack {
+  id
+	title
+	category
+	description
+	body
+	updates
+	points
+	voteStatus
+	verified
+	creator {
+		id
+		username
+		email
+	}
+	createdAt
+	updatedAt
+}
