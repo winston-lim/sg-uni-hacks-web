@@ -1,0 +1,8 @@
+query VerifiedHacks($limit: Int!, $cursor: String) {
+	verifiedHacks(limit: $limit, cursor: $cursor) {
+		hacks {
+			...HackSnippet
+		}
+		hasMore
+	}
+}

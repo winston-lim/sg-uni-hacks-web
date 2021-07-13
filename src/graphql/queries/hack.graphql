@@ -1,0 +1,5 @@
+query Hack($id: String!) {
+	hack(id: $id) {
+		...RegularHack
+	}
+}
