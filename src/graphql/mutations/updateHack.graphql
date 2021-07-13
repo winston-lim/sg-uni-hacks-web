@@ -1,5 +1,5 @@
 mutation UpdateHack($id: String!, $input: UpdateHackInput!) {
 	updateHack(id: $id, input: $input) {
-		RegularHack
+		...RegularHack
 	}
 }
