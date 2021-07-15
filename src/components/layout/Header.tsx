@@ -16,7 +16,7 @@ import NextLink from "next/link";
 import { SearchBar } from "../forms/SearchBar";
 import { FaAddressCard, FaFile } from "react-icons/fa";
 import { DarkModeSwitch } from "../icons/DarkModeSwitch";
-import { MobileNavButton } from "../icons/MobileNavButton";
+import { MobileNavButton } from "../icons/MenuButton";
 import { MobileNavContent } from "../overlay/MobileNavContent";
 
 const GithubIcon = (props: React.ComponentProps<"svg">) => (
