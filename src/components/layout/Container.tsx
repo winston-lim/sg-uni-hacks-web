@@ -2,11 +2,10 @@ import { Box, useColorMode } from "@chakra-ui/react";
 
 export const Container = (props: any) => {
 	const { colorMode } = useColorMode();
-	console.log(colorMode);
 
-	const bgColor = { light: "gray.50", dark: "gray.900" };
+	const bgColor = { light: "gray.900", dark: "gray.50" };
 
-	const color = { light: "black", dark: "white" };
+	const color = { light: "white", dark: "black" };
 	return (
 		<Box
 			alignItems="center"
