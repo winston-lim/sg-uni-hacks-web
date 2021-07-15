@@ -1,7 +1,7 @@
-import { Box, Button, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Text } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import React from "react";
-import router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { toErrorMap } from "../utils/toErrorMap";
 import { useRegisterMutation } from "../generated/graphql";
 import { withUrqlClient } from "next-urql";
@@ -18,7 +18,11 @@ interface registerProps {}
 export const Register: React.FC<registerProps> = ({}) => {
 	const router = useRouter();
 	const [, register] = useRegisterMutation();
-	const footerElement = <Text>Uni Hacks 2021</Text>;
+	const footerElement = (
+		<Flex direction="row" justifyContent="center">
+			<Text>Uni Hacks 2021</Text>;
+		</Flex>
+	);
 	return (
 		<ColorModeWrapper>
 			<Main footer={footerElement}>

@@ -17,7 +17,11 @@ import { Main } from "../components/layout/Main";
 export const Login: React.FC<{}> = ({}) => {
 	const router = useRouter();
 	const [, login] = useLoginMutation();
-	const footerElement = <Text>Uni Hacks 2021</Text>;
+	const footerElement = (
+		<Flex direction="row" justifyContent="center">
+			<Text>Uni Hacks 2021</Text>;
+		</Flex>
+	);
 	return (
 		<ColorModeWrapper>
 			<Main footer={footerElement}>
