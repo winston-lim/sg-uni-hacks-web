@@ -10,24 +10,20 @@ import { InputField } from "../components/forms/InputField";
 import { ColorModeWrapper } from "../components/layout/ColorModeWrapper";
 import { Main } from "../components/layout/Main";
 import { SizedBox } from "../components/layout/SizedBox";
-import { SizedWrapper } from "../components/layout/SizedWrapper";
+import { ResponsiveWrapper } from "../components/layout/ResponsiveWrapper";
 import { SizedHeading } from "../components/typography/SizedHeading";
+import { BasicFooter } from "../components/layout/BasicFooter";
 
 interface registerProps {}
 
 export const Register: React.FC<registerProps> = ({}) => {
 	const router = useRouter();
 	const [, register] = useRegisterMutation();
-	const footerElement = (
-		<Flex direction="row" justifyContent="center">
-			<Text>Uni Hacks 2021</Text>;
-		</Flex>
-	);
 	return (
-		<ColorModeWrapper>
-			<Main footer={footerElement}>
+		<>
+			<Main footer={<BasicFooter />}>
 				<SizedBox height={20} />
-				<SizedWrapper variant="sm">
+				<ResponsiveWrapper>
 					<SizedHeading variant="xl" title="Sign up" />
 					<SizedBox height={15} />
 					<Formik
@@ -70,9 +66,10 @@ export const Register: React.FC<registerProps> = ({}) => {
 							</Form>
 						)}
 					</Formik>
-				</SizedWrapper>
+				</ResponsiveWrapper>
+				<Box h={{ base: 200, sm: 300, md: 450, lg: 500 }} bgColor="grey.800" />
 			</Main>
-		</ColorModeWrapper>
+		</>
 	);
 };
 
