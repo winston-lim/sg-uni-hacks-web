@@ -6,43 +6,73 @@ import {
 	Heading,
 	useColorMode,
 	Link,
-	HStack,
-	Icon,
 	useDisclosure,
 	useUpdateEffect,
+	Text,
 } from "@chakra-ui/react";
 import { useViewportScroll } from "framer-motion";
 import NextLink from "next/link";
 import { SearchBar } from "../forms/SearchBar";
-import { FaAddressCard, FaFile } from "react-icons/fa";
-import { DarkModeSwitch } from "../icons/DarkModeSwitch";
-import { MobileNavButton } from "../icons/MenuButton";
+import { MenuButton } from "../icons/MenuButton";
 import { MobileNavContent } from "../overlay/MobileNavContent";
+import { NavBarContent } from "../navigation/NavBarContent";
+import {
+	useCurrentUserQuery,
+	useLogoutMutation,
+} from "../../generated/graphql";
 
-const GithubIcon = (props: React.ComponentProps<"svg">) => (
-	<svg viewBox="0 0 20 20" {...props}>
-		<path
-			fill="currentColor"
-			d="M10 0a10 10 0 0 0-3.16 19.49c.5.1.68-.22.68-.48l-.01-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.1-.65.35-1.09.63-1.34-2.22-.25-4.55-1.11-4.55-4.94 0-1.1.39-1.99 1.03-2.69a3.6 3.6 0 0 1 .1-2.64s.84-.27 2.75 1.02a9.58 9.58 0 0 1 5 0c1.91-1.3 2.75-1.02 2.75-1.02.55 1.37.2 2.4.1 2.64.64.7 1.03 1.6 1.03 2.69 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85l-.01 2.75c0 .26.18.58.69.48A10 10 0 0 0 10 0"
-		/>
-	</svg>
-);
+interface HeaderContentProps {
+	headerVariant: HeaderVariant;
+	title?: string;
+	colorMode: "light" | "dark";
+}
 
-interface HeaderContentProps {}
-
-export const HeaderContent: React.FC<HeaderProps> = ({}) => {
+export const HeaderContent: React.FC<HeaderContentProps> = ({
+	colorMode,
+	title,
+	headerVariant,
+}) => {
 	const mobileNav = useDisclosure();
 	const mobileNavBtnRef = React.useRef<HTMLButtonElement>(null);
 	useUpdateEffect(() => {
 		mobileNavBtnRef.current?.focus();
 	}, [mobileNav.isOpen]);
+	const [{ data: userData, fetching: fetchingUserData }] =
+		useCurrentUserQuery();
+	const [{ fetching: fetchingLogout }, logout] = useLogoutMutation();
+
+	const colors = { light: "black", dark: "white" };
+	const headerContent =
+		headerVariant === "searchbar" ? (
+			<SearchBar display={{ base: "none", md: "flex" }} />
+		) : (
+			<Text
+				w={{ md: "500px", lg: "800px" }}
+				color={colors[colorMode]}
+				fontWeight={600}
+				fontSize="4xl"
+			>
+				{title?.toLowerCase()}
+			</Text>
+		);
 	return (
 		<>
 			<Flex w="100%" h="100%" px="6" align="center" justify="space-between">
 				<Flex align="center">
 					<NextLink href="/" passHref>
-						<Heading color="teal.400" fontSize={{ sm: "md", md: "4xl" }}>
-							<Link>S.U.H</Link>
+						<Heading
+							color="teal.400"
+							fontSize={{ base: "xl", sm: "2xl", md: "3xl", lg: "5xl" }}
+						>
+							<Link>
+								<Text
+									bgGradient="linear(to-l, blue.400, teal.400)"
+									bgClip="text"
+									fontWeight="extrabold"
+								>
+									S U H
+								</Text>
+							</Link>
 						</Heading>
 					</NextLink>
 				</Flex>
@@ -53,62 +83,46 @@ export const HeaderContent: React.FC<HeaderProps> = ({}) => {
 					color="gray.400"
 					maxW="1100px"
 				>
-					<SearchBar display={{ base: "none", md: "flex" }} />
-					<HStack spacing="5" display={{ base: "none", md: "flex" }}>
-						<Link
-							isExternal
-							aria-label="Go to Chakra UI GitHub page"
-							href="https://github.com/winston-lim/sg-uni-hacks-web"
-						>
-							<Icon
-								as={GithubIcon}
-								display="block"
-								transition="color 0.2s"
-								w="5"
-								h="5"
-								_hover={{ color: "gray.600" }}
-							/>
-						</Link>
-						<Link isExternal aria-label="Go to profile" href="/">
-							<Icon
-								as={FaAddressCard}
-								display="block"
-								transition="color 0.2s"
-								w="5"
-								h="5"
-								_hover={{ color: "gray.600" }}
-							/>
-						</Link>
-						<Link isExternal aria-label="Go to submissions" href="/">
-							<Icon
-								as={FaFile}
-								display="block"
-								transition="color 0.2s"
-								w="5"
-								h="5"
-								_hover={{ color: "gray.600" }}
-							/>
-						</Link>
-						<DarkModeSwitch />
-					</HStack>
-					<MobileNavButton
-						ref={mobileNavBtnRef}
+					{headerContent}
+					<NavBarContent
+						userData={userData}
+						fetchingUserData={fetchingUserData}
+						fetchingLogout={fetchingLogout}
+						logout={logout}
+					/>
+					<MenuButton
+						buttonRef={mobileNavBtnRef}
 						aria-label="Open Menu"
 						onClick={mobileNav.onOpen}
 						display={{ base: "flex", md: "none" }}
 					/>
 				</Flex>
 			</Flex>
-			<MobileNavContent isOpen={mobileNav.isOpen} onClose={mobileNav.onClose} />
+			<MobileNavContent
+				isOpen={mobileNav.isOpen}
+				onClose={mobileNav.onClose}
+				userData={userData}
+				fetchingUserData={fetchingUserData}
+				fetchingLogout={fetchingLogout}
+				logout={logout}
+			/>
 		</>
 	);
 };
 
-interface HeaderProps {}
+type HeaderVariant = "searchbar" | "title" | "default";
+interface HeaderProps {
+	headerVariant: HeaderVariant;
+	title?: string;
+}
 
-export const Header: React.FC<HeaderProps> = (props) => {
+export const Header: React.FC<HeaderProps> = ({
+	headerVariant,
+	title,
+	...remainingProps
+}) => {
 	const { colorMode } = useColorMode();
-	const colors = { dark: "white", light: "grey.800" };
+	const colors = { light: "white", dark: "#171923" };
 	const bg = colors[colorMode];
 	const ref = React.useRef<HTMLHeadingElement>(null);
 	const [y, setY] = React.useState(0);
@@ -130,11 +144,15 @@ export const Header: React.FC<HeaderProps> = (props) => {
 			bg={bg}
 			left="0"
 			right="0"
-			width="full"
-			{...props}
+			maxWidth="100vw"
+			{...remainingProps}
 		>
 			<chakra.div height="4.5rem" mx="auto" maxW="8xl">
-				<HeaderContent />
+				<HeaderContent
+					colorMode={colorMode}
+					title={title}
+					headerVariant={headerVariant}
+				/>
 			</chakra.div>
 		</Box>
 	);
