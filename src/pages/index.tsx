@@ -5,28 +5,26 @@ import {
 	List,
 	ListIcon,
 	ListItem,
-	Flex,
+	Box,
+	Spacer,
 } from "@chakra-ui/react";
 import { CheckCircleIcon, LinkIcon } from "@chakra-ui/icons";
 import { Main } from "../components/layout/Main";
 import React from "react";
-import { SizedWrapper } from "../components/layout/SizedWrapper";
+import { ResponsiveWrapper } from "../components/layout/ResponsiveWrapper";
 import { SizedBox } from "../components/layout/SizedBox";
 import { SizedHeading } from "../components/typography/SizedHeading";
 import { Header } from "../components/layout/Header";
-import { Container } from "../components/layout/Container";
+import { withUrqlClient } from "next-urql";
+import { createUrqlClient } from "../utils/createUrqlClient";
+import { BasicFooter } from "../components/layout/BasicFooter";
 const Index = () => {
-	const footerElement = (
-		<Flex direction="row" justifyContent="center">
-			<Text>Uni Hacks 2021</Text>
-		</Flex>
-	);
 	return (
-		<Container height="100%">
-			<Header />
-			<Main footer={footerElement}>
+		<>
+			<Header headerVariant="searchbar" />
+			<Main footer={<BasicFooter />}>
 				<SizedBox height={20} />
-				<SizedWrapper variant="sm">
+				<ResponsiveWrapper>
 					<SizedHeading variant="xl" title="Sign in" />
 					<SizedBox height={15} />
 					<Text>
@@ -35,31 +33,22 @@ const Index = () => {
 					<List spacing={3} my={0}>
 						<ListItem>
 							<ListIcon as={CheckCircleIcon} color="green.500" />
-							<ChakraLink
-								isExternal
-								href="https://chakra-ui.com"
-								flexGrow={1}
-								mr={2}
-							>
+							<ChakraLink href="https://chakra-ui.com" flexGrow={1} mr={2}>
 								Chakra UI <LinkIcon />
 							</ChakraLink>
 						</ListItem>
 						<ListItem>
 							<ListIcon as={CheckCircleIcon} color="green.500" />
-							<ChakraLink
-								isExternal
-								href="https://nextjs.org"
-								flexGrow={1}
-								mr={2}
-							>
+							<ChakraLink href="https://nextjs.org" flexGrow={1} mr={2}>
 								Next.js <LinkIcon />
 							</ChakraLink>
 						</ListItem>
 					</List>
-				</SizedWrapper>
+				</ResponsiveWrapper>
+				<Box h={{ base: 200, sm: 300, md: 450 }} bgColor="grey.800" />
 			</Main>
-		</Container>
+		</>
 	);
 };
 
-export default Index;
+export default withUrqlClient(createUrqlClient, { ssr: true })(Index);
