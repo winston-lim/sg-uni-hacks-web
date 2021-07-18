@@ -9,24 +9,22 @@ import { useLoginMutation } from "../generated/graphql";
 import { withUrqlClient } from "next-urql";
 import { createUrqlClient } from "../utils/createUrqlClient";
 import NextLink from "next/link";
-import { SizedWrapper } from "../components/layout/SizedWrapper";
+import { ResponsiveWrapper } from "../components/layout/ResponsiveWrapper";
 import { SizedHeading } from "../components/typography/SizedHeading";
 import { SizedBox } from "../components/layout/SizedBox";
 import { Main } from "../components/layout/Main";
+import { BasicFooter } from "../components/layout/BasicFooter";
+import { DarkModeSwitch } from "../components/icons/DarkModeSwitch";
 
 export const Login: React.FC<{}> = ({}) => {
 	const router = useRouter();
 	const [, login] = useLoginMutation();
-	const footerElement = (
-		<Flex direction="row" justifyContent="center">
-			<Text>Uni Hacks 2021</Text>;
-		</Flex>
-	);
 	return (
-		<ColorModeWrapper>
-			<Main footer={footerElement}>
+		<>
+			<DarkModeSwitch isFixed={true} />
+			<Main footer={<BasicFooter />}>
 				<SizedBox height={20} />
-				<SizedWrapper variant="sm">
+				<ResponsiveWrapper>
 					<SizedHeading variant="xl" title="Sign in" />
 					<SizedBox height={15} />
 					<Formik
@@ -75,9 +73,10 @@ export const Login: React.FC<{}> = ({}) => {
 							</Form>
 						)}
 					</Formik>
-				</SizedWrapper>
+				</ResponsiveWrapper>
+				<Box h={{ base: 200, sm: 300, md: 450, lg: 500 }} bgColor="grey.800" />
 			</Main>
-		</ColorModeWrapper>
+		</>
 	);
 };
 
