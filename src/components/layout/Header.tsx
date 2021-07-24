@@ -57,8 +57,8 @@ export const HeaderContent: React.FC<HeaderContentProps> = ({
 		);
 	return (
 		<>
-			<Flex w="100%" h="100%" px="6" align="center" justify="space-between">
-				<Flex align="center">
+			<Flex maxW="100%" h="100%" px="6" align="center" justify="space-between">
+				<Flex minW={{ base: 20, sm: 30, md: 100, lg: 125 }} align="center">
 					<NextLink href="/" passHref>
 						<Heading
 							color="teal.400"
