@@ -28,6 +28,7 @@ export const Main: React.FC<MainProps> = (props: any) => {
 			bg={bgColor[colorMode]}
 			height="100%"
 			color={color[colorMode]}
+			maxW="100vw"
 			{...remainingProps}
 		>
 			<Box px={5} mx="auto">
