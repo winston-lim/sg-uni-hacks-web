@@ -9,16 +9,16 @@ export const SearchBar: React.FC<SearchBarProps> = ({ display }) => {
 	const { colorMode } = useColorMode();
 	console.log(colorMode);
 
-	const bgColor = { light: "gray.700", dark: "gray.50" };
+	const bgColor = { dark: "gray.700", light: "gray.50" };
 
-	const color = { light: "white", dark: "black" };
+	const color = { dark: "white", light: "black" };
 	return (
 		<Input
 			variant="filled"
 			color={color[colorMode]}
 			bgColor={bgColor[colorMode]}
 			placeholder="Find a hack"
-			size="lg"
+			w={{ md: "500px", lg: "800px" }}
 			mr="5"
 			display={display}
 		/>
