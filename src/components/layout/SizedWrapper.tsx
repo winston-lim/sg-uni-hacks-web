@@ -1,18 +1,16 @@
-import { Box } from "@chakra-ui/layout";
+import { Box } from "@chakra-ui/react";
 import React from "react";
-import { DefaultSizeVariants } from "../../types/default";
 
-interface wrapperProps {
-	variant?: DefaultSizeVariants;
+interface SizedWrapperProps {
+	width: number;
 }
 
-export const SizedWrapper: React.FC<wrapperProps> = ({ children }) => {
+export const SizedWrapper: React.FC<SizedWrapperProps> = ({
+	width,
+	children,
+}) => {
 	return (
-		<Box
-			mx="auto"
-			maxW={{ base: "400px", sm: "400px", md: "500px", lg: "500px" }}
-			w="100%"
-		>
+		<Box maxW={width} alignItems="center">
 			{children}
 		</Box>
 	);
