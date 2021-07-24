@@ -2,15 +2,15 @@ import { Drawer, Icon, IconButton } from "@chakra-ui/react";
 import React from "react";
 import { FaBars } from "react-icons/fa";
 
-interface MobileNavButtonProps {
+interface MenuButtonProps {
 	display?: any;
-	ref?: React.RefObject<HTMLButtonElement>;
+	buttonRef?: React.RefObject<HTMLButtonElement>;
 	onClick(): void;
 }
 
-export const MobileNavButton: React.FC<MobileNavButtonProps> = ({
+export const MenuButton: React.FC<MenuButtonProps> = ({
 	display,
-	ref,
+	buttonRef,
 	onClick,
 }) => {
 	return (
@@ -18,7 +18,7 @@ export const MobileNavButton: React.FC<MobileNavButtonProps> = ({
 			variant="outline"
 			colorScheme="teal"
 			display={display}
-			ref={ref}
+			ref={buttonRef}
 			onClick={onClick}
 			aria-label="Send email"
 			icon={<Icon as={FaBars} />}
