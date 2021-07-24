@@ -42,7 +42,7 @@ export const NavBarContent: React.FC<NavBarContentProps> = ({
 	const { colorMode } = useColorMode();
 	const textColor = { light: "teal.200", dark: "blue.200" };
 	const bgColor = { light: "teal.200", dark: "blue.200" };
-	const color = { light: "black900", dark: "white" };
+	const color = { light: "black", dark: "white" };
 	let navBarContent = null;
 	if (fetchingUserData) {
 		navBarContent = null;
@@ -137,6 +137,7 @@ export const NavBarContent: React.FC<NavBarContentProps> = ({
 					<Button
 						onClick={async () => {
 							await logout();
+							router.push("/");
 							router.reload();
 						}}
 						isLoading={fetchingLogout}
