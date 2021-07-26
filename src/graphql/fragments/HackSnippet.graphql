@@ -6,6 +6,8 @@ fragment HackSnippet on Hack {
 	points
 	voteStatus
 	duration
+	updates
+	s3Url
 	creator {
 		...RegularUser
 	}
