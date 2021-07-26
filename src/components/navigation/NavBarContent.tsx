@@ -97,7 +97,7 @@ export const NavBarContent: React.FC<NavBarContentProps> = ({
 						_hover={{ color: "gray.600" }}
 					/>
 				</Link>
-				<Link aria-label="Go to submissions" href="/">
+				<Link aria-label="Go to submissions" href="/my-submissions">
 					<Icon
 						as={FaFile}
 						display="block"
@@ -124,7 +124,7 @@ export const NavBarContent: React.FC<NavBarContentProps> = ({
 					</Flex>
 				</Button>
 				<Flex align="center">
-					<NextLink href="/create">
+					<NextLink href="/quick-submission">
 						<Button
 							color={color[colorMode]}
 							bgColor={bgColor[colorMode]}
