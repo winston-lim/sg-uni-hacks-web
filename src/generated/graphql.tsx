@@ -19,6 +19,7 @@ export type CreateHackInput = {
   description: Scalars['String'];
   category: Scalars['String'];
   body: Scalars['String'];
+  s3Url?: Maybe<Scalars['String']>;
 };
 
 export type FieldError = {
@@ -35,6 +36,7 @@ export type Hack = {
   description: Scalars['String'];
   body: Scalars['String'];
   updates?: Maybe<Scalars['String']>;
+  s3Url?: Maybe<Scalars['String']>;
   points: Scalars['Int'];
   voteStatus?: Maybe<Scalars['Int']>;
   verified: Scalars['Boolean'];
@@ -44,6 +46,7 @@ export type Hack = {
   updatedAt: Scalars['String'];
   descriptionSnippet: Scalars['String'];
   duration: Scalars['Int'];
+  hackUrl: Scalars['String'];
 };
 
 export type Mutation = {
@@ -180,7 +183,7 @@ export type UsernamePasswordInput = {
 
 export type HackSnippetFragment = (
   { __typename?: 'Hack' }
-  & Pick<Hack, 'id' | 'title' | 'category' | 'descriptionSnippet' | 'points' | 'voteStatus' | 'duration' | 'createdAt' | 'updatedAt'>
+  & Pick<Hack, 'id' | 'title' | 'category' | 'descriptionSnippet' | 'points' | 'voteStatus' | 'duration' | 'updates' | 's3Url' | 'createdAt' | 'updatedAt'>
   & { creator: (
     { __typename?: 'User' }
     & RegularUserFragment
@@ -440,6 +443,8 @@ export const HackSnippetFragmentDoc = gql`
   points
   voteStatus
   duration
+  updates
+  s3Url
   creator {
     ...RegularUser
   }
