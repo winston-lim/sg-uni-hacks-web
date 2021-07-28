@@ -8,17 +8,20 @@ import {
 } from "@chakra-ui/react";
 import { useField } from "formik";
 import React, { InputHTMLAttributes } from "react";
+import { ColorConfig } from "../../types/default";
 
 type InputFieldProps = InputHTMLAttributes<HTMLInputElement> & {
 	name: string;
 	label: string;
+	colorConfig: ColorConfig;
 	textarea?: boolean;
 };
 
 export const InputField: React.FC<InputFieldProps> = ({
 	label,
-	size: _,
+	size,
 	textarea,
+	colorConfig,
 	...props
 }) => {
 	const [field, { error }] = useField(props);
@@ -28,18 +31,23 @@ export const InputField: React.FC<InputFieldProps> = ({
 		id: field.name,
 		placeholder: props.placeholder,
 	} as any;
-	const { colorMode } = useColorMode();
-	const color = { dark: "pink", light: "red" };
+	const colorMode = colorConfig.colorMode;
 	return (
 		<FormControl isInvalid={!!error}>
 			<FormLabel htmlFor={field.name}>{label}</FormLabel>
 			{textarea ? (
 				<Textarea {...inputProps}></Textarea>
 			) : (
-				<Input {...inputProps} variant="filled" />
+				<Input
+					w={{ base: undefined, sm: undefined, md: size }}
+					{...inputProps}
+					variant="filled"
+				/>
 			)}
 			{error ? (
-				<FormErrorMessage color={color[colorMode]}>{error}</FormErrorMessage>
+				<FormErrorMessage color={colorConfig.errorColor![colorMode]}>
+					{error}
+				</FormErrorMessage>
 			) : null}
 		</FormControl>
 	);
