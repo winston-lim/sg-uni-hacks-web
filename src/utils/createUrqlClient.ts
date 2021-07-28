@@ -13,6 +13,8 @@ import {
 	LogoutMutation,
 	ChangePasswordMutation,
 	VoteMutationVariables,
+	CreateHackMutation,
+	UnverifiedHacksQuery,
 } from "../generated/graphql";
 import {
 	Cache,
@@ -27,11 +29,31 @@ import Router from "next/router";
 import gql from "graphql-tag";
 import { isServer } from "./isServer";
 
-const invalidateAllHacks = (cache: Cache) => {
+const invalidateAllVerifiedHacks = (cache: Cache) => {
 	const allFields = cache.inspectFields("Query");
-	const fieldInfos = allFields.filter((info) => info.fieldName === "hacks");
+	const fieldInfos = allFields.filter(
+		(info) => info.fieldName === "verifiedHacks"
+	);
 	fieldInfos.forEach((fieldInfo) => {
-		cache.invalidate("Query", "hacks", fieldInfo.arguments);
+		cache.invalidate("Query", "verifiedHacks", fieldInfo.arguments);
+	});
+};
+
+const invalidateAllUnverifiedHacks = (cache: Cache) => {
+	const allFields = cache.inspectFields("Query");
+	const fieldInfos = allFields.filter(
+		(info) => info.fieldName === "unverifiedHacks"
+	);
+	fieldInfos.forEach((fieldInfo) => {
+		cache.invalidate("Query", "unverifiedHacks", fieldInfo.arguments);
+	});
+};
+
+const invalidateUserHacks = (cache: Cache) => {
+	const allFields = cache.inspectFields("Query");
+	const fieldInfos = allFields.filter((info) => info.fieldName === "userHacks");
+	fieldInfos.forEach((fieldInfo) => {
+		cache.invalidate("Query", "userHacks", fieldInfo.arguments);
 	});
 };
 
@@ -126,7 +148,8 @@ export const createUrqlClient = (ssrExchange: any, ctx: any) => {
 				},
 				resolvers: {
 					Query: {
-						hacks: cursorPagination(),
+						//change to verifiedHacks
+						unverifiedHacks: cursorPagination(),
 					},
 				},
 				updates: {
@@ -146,7 +169,7 @@ export const createUrqlClient = (ssrExchange: any, ctx: any) => {
 									}
 								}
 							);
-							invalidateAllHacks(cache);
+							invalidateAllVerifiedHacks(cache);
 						},
 						register: (_result, args, cache, info) => {
 							typedUpdateQuery<RegisterMutation, CurrentUserQuery>(
@@ -189,7 +212,13 @@ export const createUrqlClient = (ssrExchange: any, ctx: any) => {
 							);
 						},
 						createHack: (_result, args, cache, info) => {
-							invalidateAllHacks(cache);
+							invalidateUserHacks(cache);
+							invalidateAllUnverifiedHacks(cache);
+						},
+						deleteHack: (_result, args, cache, info) => {
+							invalidateUserHacks(cache);
+							invalidateAllVerifiedHacks(cache);
+							invalidateAllUnverifiedHacks(cache);
 						},
 						vote: (_result, args, cache, info) => {
 							const { hackId, value } = args as VoteMutationVariables;
