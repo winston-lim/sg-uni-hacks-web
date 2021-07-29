@@ -1,4 +1,12 @@
-import { Box, Button, Flex, Link, Text } from "@chakra-ui/react";
+import {
+	Box,
+	Button,
+	Flex,
+	HStack,
+	Link,
+	Text,
+	useColorMode,
+} from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import React from "react";
 import { useRouter } from "next/router";
@@ -15,9 +23,19 @@ import { SizedBox } from "../components/layout/SizedBox";
 import { Main } from "../components/layout/Main";
 import { BasicFooter } from "../components/layout/BasicFooter";
 import { DarkModeSwitch } from "../components/icons/DarkModeSwitch";
+import { ColorConfig } from "../types/default";
 
 export const Login: React.FC<{}> = ({}) => {
 	const router = useRouter();
+	const { colorMode } = useColorMode();
+	const colorConfig: ColorConfig = {
+		colorMode: colorMode,
+		colorScheme: { dark: "blue", light: "teal" },
+		errorColor: { dark: "pink", light: "red" },
+		color: { dark: "white", light: "black" },
+		bgColor: { dark: "blue.200", light: "teal.300" },
+		accentColor: { dark: "white", light: "grey.700" },
+	};
 	const [, login] = useLoginMutation();
 	return (
 		<>
@@ -48,6 +66,7 @@ export const Login: React.FC<{}> = ({}) => {
 									name="usernameOrEmail"
 									placeholder="username or email"
 									label="Username or Email"
+									colorConfig={colorConfig}
 								/>
 								<Box mt={4}>
 									<InputField
@@ -55,6 +74,7 @@ export const Login: React.FC<{}> = ({}) => {
 										placeholder="password"
 										label="Password"
 										type="password"
+										colorConfig={colorConfig}
 									/>
 								</Box>
 								<Flex mt="2">
@@ -62,19 +82,30 @@ export const Login: React.FC<{}> = ({}) => {
 										<Link ml="auto">Forgot password?</Link>
 									</NextLink>
 								</Flex>
-								<Button
-									mt={4}
-									type="submit"
-									colorScheme="teal"
-									isLoading={isSubmitting}
-								>
-									Login
-								</Button>
+								<HStack spacing={5} mt={4}>
+									<Button
+										type="submit"
+										bgColor={colorConfig.bgColor[colorMode]}
+										color="white"
+										isLoading={isSubmitting}
+									>
+										Login
+									</Button>
+									<Button
+										bgColor="whiteAlpha.900"
+										boxShadow={colorMode === "light" ? "md" : "inner"}
+										color="black"
+										onClick={() => {
+											router.push("register");
+										}}
+									>
+										register instead
+									</Button>
+								</HStack>
 							</Form>
 						)}
 					</Formik>
 				</ResponsiveWrapper>
-				<Box h={{ base: 200, sm: 300, md: 450, lg: 500 }} bgColor="grey.800" />
 			</Main>
 		</>
 	);
