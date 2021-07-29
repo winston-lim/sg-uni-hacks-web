@@ -21,6 +21,10 @@ import { Category, defaultEditorData } from "../../types/default";
 import { useCreateHackMutation } from "../../generated/graphql";
 import { NextRouter } from "next/router";
 import { delay } from "../../utils/delay";
+import {
+	handleGraphqlError,
+	handleGraphqlSuccess,
+} from "../../utils/handleGraphqlResponse";
 
 const EDITOR_JS_TOOLS = {
 	embed: Embed,
@@ -39,14 +43,12 @@ const EDITOR_JS_TOOLS = {
 export interface EditorProps {
 	borderColor: BackgroundProps["bgColor"];
 	router: NextRouter;
-	setErrorMessage: React.Dispatch<React.SetStateAction<string>>;
-	setSuccessMessage: React.Dispatch<React.SetStateAction<string>>;
+	setAlert: React.Dispatch<React.SetStateAction<string>>;
 }
 export const Editor: React.FC<EditorProps> = ({
 	router,
 	borderColor,
-	setErrorMessage,
-	setSuccessMessage,
+	setAlert,
 }) => {
 	const [clearCount, setClearCount] = useState<number>(0);
 	const [, createHack] = useCreateHackMutation();
@@ -54,9 +56,9 @@ export const Editor: React.FC<EditorProps> = ({
 	const instanceRef = React.useRef<EditorJS | null>(null);
 	async function handleSave() {
 		if (clearCount < 1) {
-			setErrorMessage("error: cannot submit unchanged template!");
+			setAlert("error: cannot submit unchanged template!");
 			return setTimeout(() => {
-				setErrorMessage("");
+				setAlert("");
 			}, 3000);
 		}
 		const savedData = await instanceRef.current!.save();
@@ -70,18 +72,17 @@ export const Editor: React.FC<EditorProps> = ({
 			},
 		});
 		if (response.error) {
-			console.log(response.error);
-			setErrorMessage("error: an error occurred, try later!");
-			await delay(3000);
-			setErrorMessage("");
+			await handleGraphqlError(response, setAlert);
 		} else if (response.data?.createHack) {
-			setSuccessMessage("Successfully created hack");
-			console.log("created hack: ", response.data?.createHack);
-			await delay(2000);
-			setSuccessMessage("");
-			await delay(500);
+			await handleGraphqlSuccess(
+				response,
+				setAlert,
+				"createHack",
+				"sucessfully created a full submission"
+			);
 			router.push("/my-submissions");
 		}
+		return;
 	}
 	async function handleClear() {
 		await instanceRef.current!.clear();
