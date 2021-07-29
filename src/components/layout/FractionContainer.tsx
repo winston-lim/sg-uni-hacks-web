@@ -20,17 +20,16 @@ export const FractionContainer: React.FC<FractionContainerProps> = ({
 			direction={{ base: "column", sm: "column", md: "row", lg: "row" }}
 			justifyContent="space-around"
 		>
-			<Flex flex={col1} align="center" direction="column">
-				<Box>{child1}</Box>
-			</Flex>
 			<Flex
-				ml={10}
-				flex={col2}
+				minW={{ base: 360, sm: 400, md: 600, lg: 800 }}
+				flex={col1}
 				align="center"
-				justifyContent="center"
 				direction="column"
 			>
-				<Box>{child2}</Box>
+				{child1}
+			</Flex>
+			<Flex ml={10} flex={col2} align="center" direction="column">
+				{child2}
 			</Flex>
 		</Flex>
 	);
