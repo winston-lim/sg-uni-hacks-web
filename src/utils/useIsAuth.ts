@@ -10,4 +10,7 @@ export const useIsAuth = () => {
 			router.replace("/login?next=" + router.pathname);
 		}
 	}, [data, router, fetching]);
+	if (data?.currentUser && !fetching) {
+		return data.currentUser;
+	}
 };
