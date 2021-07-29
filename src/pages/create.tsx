@@ -44,8 +44,7 @@ const Create = () => {
 			}
 		);
 	}
-	const [errorMessage, setErrorMessage] = useState<string>("");
-	const [successMessage, setSuccessMessage] = useState<string>("");
+	const [alert, setAlert] = useState<string>("");
 
 	const { colorMode } = useColorMode();
 	const colorConfig: ColorConfig = {
@@ -160,33 +159,21 @@ const Create = () => {
 					/>
 					<SizedBox height={30} />
 				</SizedWrapper>
-				{errorMessage === "" ? null : (
+				{alert === "" ? null : (
 					<Flex mb={4} w="100%" justifyContent="center">
 						<Alert
 							maxW={{ base: "450px", md: "800px", lg: "1000px" }}
 							status="error"
 						>
 							<AlertIcon />
-							<AlertTitle mr={2}>{errorMessage}</AlertTitle>
-						</Alert>
-					</Flex>
-				)}
-				{successMessage === "" ? null : (
-					<Flex mb={4} w="100%" justifyContent="center">
-						<Alert
-							maxW={{ base: "450px", md: "800px", lg: "1000px" }}
-							status="success"
-						>
-							<AlertIcon />
-							<AlertTitle mr={2}>{successMessage}</AlertTitle>
+							<AlertTitle mr={2}>{alert}</AlertTitle>
 						</Alert>
 					</Flex>
 				)}
 				<Box mb={20} id="editor-container" height="100%">
 					{Editor && (
 						<Editor
-							setErrorMessage={setErrorMessage}
-							setSuccessMessage={setSuccessMessage}
+							setAlert={setAlert}
 							router={router}
 							borderColor={colorConfig.accentColor![colorMode]}
 						></Editor>
