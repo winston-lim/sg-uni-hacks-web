@@ -6,9 +6,10 @@ import {
 	Box,
 	useColorMode,
 	Button,
+	Tooltip,
 } from "@chakra-ui/react";
 import React from "react";
-import { FaAddressCard, FaFile } from "react-icons/fa";
+import { FaHeart, FaFile } from "react-icons/fa";
 import { DarkModeSwitch } from "../icons/DarkModeSwitch";
 import NextLink from "next/link";
 import { CurrentUserQuery } from "../../generated/graphql";
@@ -81,59 +82,90 @@ export const NavBarContent: React.FC<NavBarContentProps> = ({
 			</HStack>
 		);
 	} else {
+		const isAdmin = userData.currentUser.role === "admin";
 		//user is logged in
 		navBarContent = (
 			<HStack spacing="5" display={{ base: "none", md: "flex" }}>
-				<Link
-					aria-label="Go to Chakra UI GitHub page"
-					href="https://github.com/winston-lim/sg-uni-hacks-web"
-				>
-					<Icon
-						as={GithubIcon}
-						display="block"
-						transition="color 0.2s"
-						w="5"
-						h="5"
-						_hover={{ color: "gray.600" }}
-					/>
-				</Link>
-				<Link aria-label="Go to submissions" href="/my-submissions">
-					<Icon
-						as={FaFile}
-						display="block"
-						transition="color 0.2s"
-						w="5"
-						h="5"
-						_hover={{ color: "gray.600" }}
-					/>
-				</Link>
-				<Button background="transparent" aria-label="Go to profile" href="/">
-					<Flex align="center">
-						<Icon
-							as={FaAddressCard}
-							display="block"
-							transition="color 0.2s"
-							w="5"
-							h="5"
-							_hover={{ color: "gray.600" }}
-						/>
-						<SizedBox width={1.5} />
-						<Box mr={2} textColor={textColor[colorMode]} fontWeight={600}>
-							{userData.currentUser.username}
-						</Box>
-					</Flex>
-				</Button>
-				<Flex align="center">
-					<NextLink href="/quick-submission">
-						<Button
-							color={color[colorMode]}
-							bgColor={bgColor[colorMode]}
-							as={Link}
-							mr={5}
+				<Tooltip label="Go to project GitHub page">
+					<span>
+						<Link
+							aria-label="Go to SUH GitHub page"
+							href="https://github.com/winston-lim/sg-uni-hacks-web"
+							isExternal
 						>
-							create
+							<Icon
+								as={GithubIcon}
+								display="block"
+								transition="color 0.2s"
+								w="5"
+								h="5"
+								_hover={{ color: "gray.600" }}
+							/>
+						</Link>
+					</span>
+				</Tooltip>
+				<Tooltip label="Go to liked hacks">
+					<span>
+						<Link
+							title="Liked"
+							aria-label="Liked hacks"
+							href="https://github.com/winston-lim/sg-uni-hacks-web"
+							isExternal
+						>
+							<Icon
+								as={FaHeart}
+								display="block"
+								transition="color 0.2s"
+								w="5"
+								h="5"
+								_hover={{ color: "gray.600" }}
+							/>
+						</Link>
+					</span>
+				</Tooltip>
+				<Tooltip
+					label={isAdmin ? "View all submissions" : "Go to my submissions"}
+				>
+					<span>
+						<Button
+							p={0}
+							background="transparent"
+							aria-label={isAdmin ? "all submissions" : "my submissions"}
+							onClick={() => {
+								router.push(isAdmin ? "submissions" : "/my-submissions");
+							}}
+						>
+							<Flex align="center">
+								<Icon
+									as={FaFile}
+									display="block"
+									transition="color 0.2s"
+									w="5"
+									h="5"
+								/>
+								<SizedBox width={1.5} />
+								<Box mr={2} textColor={textColor[colorMode]} fontWeight={600}>
+									{isAdmin ? "submissions" : "my submissions"}
+								</Box>
+							</Flex>
 						</Button>
-					</NextLink>
+					</span>
+				</Tooltip>
+				<Flex align="center">
+					<Tooltip label="contribute">
+						<span>
+							<NextLink href="/quick-submission">
+								<Button
+									color={color[colorMode]}
+									bgColor={bgColor[colorMode]}
+									as={Link}
+									mr={5}
+								>
+									contribute
+								</Button>
+							</NextLink>
+						</span>
+					</Tooltip>
 					<Button
 						onClick={async () => {
 							await logout();
