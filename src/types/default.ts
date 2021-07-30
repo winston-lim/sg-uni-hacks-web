@@ -10,7 +10,7 @@ export const defaultEditorData = {
 	blocks: [
 		{
 			type: "header",
-			data: { text: "Briefly read once before clicking 'Clear'", level: 1 },
+			data: { text: "Press 'Clear' to start", level: 1 },
 		},
 		{
 			type: "header",
@@ -55,7 +55,13 @@ export enum Category {
 	NOTE_TAKING = "note-taking",
 	TIME_SAVER = "time-saver",
 	TIME_MANAGEMENT = "time-management",
+	HEALTH = "health",
 	PLANNING = "planning",
+	EDUCATION = "education",
+	UNIVERSITY = "university",
+	FINANCE = "finance",
+	TECHNOLOGY = "technology",
+	FASHION = "fashion",
 	OTHERS = "others",
 }
 
@@ -86,3 +92,6 @@ export type ColorConfig = {
 		dark: string;
 	};
 };
+
+export const fallbackBackgroundUrl =
+	"https://images.unsplash.com/photo-1608408843596-b3119736057c?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2095&q=80";
