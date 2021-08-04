@@ -106,12 +106,7 @@ export const NavBarContent: React.FC<NavBarContentProps> = ({
 				</Tooltip>
 				<Tooltip label="Go to liked hacks">
 					<span>
-						<Link
-							title="Liked"
-							aria-label="Liked hacks"
-							href="https://github.com/winston-lim/sg-uni-hacks-web"
-							isExternal
-						>
+						<Link title="Liked" aria-label="Liked hacks" href="/liked">
 							<Icon
 								as={FaHeart}
 								display="block"
@@ -170,7 +165,6 @@ export const NavBarContent: React.FC<NavBarContentProps> = ({
 						onClick={async () => {
 							await logout();
 							router.push("/");
-							router.reload();
 						}}
 						isLoading={fetchingLogout}
 						variant="link"
