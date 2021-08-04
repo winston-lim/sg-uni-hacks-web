@@ -9,8 +9,10 @@ import {
 	PopoverFooter,
 	PopoverHeader,
 	PopoverTrigger,
+	Stack,
 	Td,
 	Tr,
+	Text,
 } from "@chakra-ui/react";
 import React from "react";
 import { CheckCircleIcon, SmallCloseIcon } from "@chakra-ui/icons";
@@ -23,32 +25,33 @@ interface RowItemProps {
 	title: string;
 	description: string;
 	createdAt: string;
-	fileUpload?: string;
+	s3Url: string | undefined;
 	verified: boolean;
 	id: string;
 	deleteHack(id: any): Promise<OperationResult>;
 	colorConfig: ColorConfig;
 	setAlert: React.Dispatch<React.SetStateAction<string>>;
 	verifyHack?: () => Promise<OperationResult>;
-	setRefetch: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 export const RowItem: React.FC<RowItemProps> = ({
 	title,
 	description,
 	createdAt,
-	fileUpload,
+	s3Url,
 	verified,
 	id,
 	colorConfig,
 	deleteHack,
 	setAlert,
 	verifyHack,
-	setRefetch,
 }) => {
 	const colorMode = colorConfig.colorMode;
 	const date = new Date();
 	date.setTime(parseInt(createdAt));
+
+	const fileUploadLinks = s3Url ? JSON.parse(s3Url) : undefined;
+
 	const handleQuery = async (operation: any, args?: any) => {
 		const response = await operation(args);
 		const operationName = `${
@@ -60,7 +63,7 @@ export const RowItem: React.FC<RowItemProps> = ({
 			setAlert("");
 		} else if (response.data[operationName]) {
 			setAlert(
-				operationName === "verify"
+				operationName === "verifyHack"
 					? "successfully verified hack"
 					: "sucessfully deleted hack"
 			);
@@ -70,7 +73,6 @@ export const RowItem: React.FC<RowItemProps> = ({
 		} else {
 			setAlert("error: operation failed, try again");
 		}
-		setRefetch(true);
 	};
 	return (
 		<Tr key={id}>
@@ -78,14 +80,46 @@ export const RowItem: React.FC<RowItemProps> = ({
 			<Td>{description === "" ? "NIL" : description + "..."}</Td>
 			<Td>{date.toLocaleString()}</Td>
 			<Td>
-				{fileUpload ? <Link href={fileUpload}>File</Link> : <SmallCloseIcon />}
+				{fileUploadLinks ? (
+					<Stack spacing={5}>
+						{fileUploadLinks.documentLinks ? (
+							<Stack spacing={1}>
+								<Text>Documents: </Text>
+								{fileUploadLinks.documentLinks.map((link: string) => {
+									return (
+										<Link key={link} ml={2} href={link} isExternal>
+											<u>Link</u>
+										</Link>
+									);
+								})}
+							</Stack>
+						) : undefined}
+						{fileUploadLinks.otherLinks ? (
+							<Stack spacing={1}>
+								<Text>Others: </Text>
+								{fileUploadLinks.otherLinks.map((link: string) => {
+									return (
+										<Link key={link} ml={2} href={link} isExternal>
+											<u>Link</u>
+										</Link>
+									);
+								})}
+							</Stack>
+						) : undefined}
+						{!fileUploadLinks ? <SmallCloseIcon /> : undefined}
+					</Stack>
+				) : (
+					<SmallCloseIcon />
+				)}
 			</Td>
 			<Td>
 				{!!verified ? <CheckCircleIcon color="green" /> : <SmallCloseIcon />}
 			</Td>
 			{!!verifyHack ? (
 				<Td>
-					<Link href={`localhost:3000/update/${id}`}>Link</Link>
+					<Link href={`localhost:3000/update/${id}`}>
+						<u>Link</u>
+					</Link>
 				</Td>
 			) : null}
 			<Td>
@@ -125,7 +159,9 @@ export const RowItem: React.FC<RowItemProps> = ({
 						)}
 					</Popover>
 				) : !!verified ? (
-					<Link href={`localhost:3000/post/${id}`}>Link</Link>
+					<Link href={`localhost:3000/post/${id}`}>
+						<u>Link</u>
+					</Link>
 				) : (
 					"Pending"
 				)}

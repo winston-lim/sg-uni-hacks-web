@@ -70,7 +70,7 @@ const MySubmission = () => {
 					title={hack.title}
 					description={hack.descriptionSnippet}
 					createdAt={hack.createdAt}
-					fileUpload={hack.s3Url ? hack.s3Url : undefined}
+					s3Url={hack.s3Url ? hack.s3Url : undefined}
 					verified={hack.verified}
 					deleteHack={deleteHack}
 					colorConfig={colorConfig}
