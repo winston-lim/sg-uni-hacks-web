@@ -24,6 +24,7 @@ import {
 interface HeaderContentProps {
 	headerVariant: HeaderVariant;
 	title?: string;
+	setSearchTerm?: React.Dispatch<React.SetStateAction<string>>;
 	colorMode: "light" | "dark";
 }
 
@@ -31,6 +32,7 @@ export const HeaderContent: React.FC<HeaderContentProps> = ({
 	colorMode,
 	title,
 	headerVariant,
+	setSearchTerm,
 }) => {
 	const mobileNav = useDisclosure();
 	const mobileNavBtnRef = React.useRef<HTMLButtonElement>(null);
@@ -44,7 +46,10 @@ export const HeaderContent: React.FC<HeaderContentProps> = ({
 	const colors = { light: "black", dark: "white" };
 	const headerContent =
 		headerVariant === "searchbar" ? (
-			<SearchBar display={{ base: "none", md: "flex" }} />
+			<SearchBar
+				setSearchTerm={setSearchTerm!}
+				display={{ base: "none", md: "flex" }}
+			/>
 		) : (
 			<Text
 				w={{ md: "500px", lg: "800px" }}
@@ -114,11 +119,13 @@ type HeaderVariant = "searchbar" | "title" | "default";
 interface HeaderProps {
 	headerVariant: HeaderVariant;
 	title?: string;
+	setSearchTerm?: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export const Header: React.FC<HeaderProps> = ({
 	headerVariant,
 	title,
+	setSearchTerm,
 	...remainingProps
 }) => {
 	const { colorMode } = useColorMode();
@@ -152,6 +159,7 @@ export const Header: React.FC<HeaderProps> = ({
 					colorMode={colorMode}
 					title={title}
 					headerVariant={headerVariant}
+					setSearchTerm={setSearchTerm}
 				/>
 			</chakra.div>
 		</Box>
