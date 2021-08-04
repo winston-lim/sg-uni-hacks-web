@@ -1,0 +1,6 @@
+query AllHacks {
+	allHacks {
+		...HackSnippet
+		verified
+	}
+}
