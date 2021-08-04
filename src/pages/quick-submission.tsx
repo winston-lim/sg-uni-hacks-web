@@ -83,19 +83,34 @@ export const quickSubmission: React.FC<quickSubmissionProps> = ({}) => {
 									category: "",
 									description: "",
 									body: "",
-									file: "",
+									documentFiles: [],
+									otherFiles: [],
 								}}
 								onSubmit={async (values, { setErrors }) => {
-									const { file, ...remainingValues } = values;
+									const { documentFiles, otherFiles, ...remainingValues } =
+										values;
 									const hackInput: CreateHackInput = {
 										...remainingValues,
 									};
-									if (values.file !== "") {
+									const uploadLinks = {} as any;
+									if (documentFiles.length > 0) {
 										const response = await uploadFileToS3(
-											file as unknown as File,
+											documentFiles,
 											user!.id
 										);
-										hackInput.s3Url = response[0];
+										console.log("Uploaded document: ", response);
+										uploadLinks["documentLinks"] = response;
+									}
+									if (otherFiles.length > 0) {
+										const response = await uploadFileToS3(otherFiles, user!.id);
+										console.log("Uploaded others: ", response);
+										uploadLinks["otherLinks"] = response;
+									}
+									if (
+										uploadLinks["documentLinks"] ||
+										uploadLinks["otherLinks"]
+									) {
+										hackInput.s3Url = JSON.stringify(uploadLinks);
 									}
 									const response = await createHack({
 										input: hackInput,
@@ -153,9 +168,18 @@ export const quickSubmission: React.FC<quickSubmissionProps> = ({}) => {
 										</Box>
 										<Box mt={4}>
 											<FileInputField
-												name="file"
-												placeholder="Click to upload a file"
-												label="upload a document"
+												name="documentFiles"
+												placeholder="Upload document(s)"
+												label="upload document(s)"
+												colorConfig={colorConfig}
+												size={600}
+											/>
+										</Box>
+										<Box mt={4}>
+											<FileInputField
+												name="otherFiles"
+												placeholder="Upload other files"
+												label="upload other files"
 												colorConfig={colorConfig}
 												size={600}
 											/>
