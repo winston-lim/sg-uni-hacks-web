@@ -128,10 +128,15 @@ export type PaginatedHacks = {
 export type Query = {
   __typename?: 'Query';
   currentUser?: Maybe<User>;
+  allHacks: Array<Hack>;
   verifiedHacks: PaginatedHacks;
   unverifiedHacks: PaginatedHacks;
   userHacks: Array<Hack>;
+  verifiedHacksByCategory: PaginatedHacks;
   hack?: Maybe<Hack>;
+  verifiedHacksBySearchTerm: PaginatedHacks;
+  userLikedHacks: PaginatedHacks;
+  mostLikedHacks: Array<Hack>;
 };
 
 
@@ -147,8 +152,28 @@ export type QueryUnverifiedHacksArgs = {
 };
 
 
+export type QueryVerifiedHacksByCategoryArgs = {
+  category: Scalars['String'];
+  cursor?: Maybe<Scalars['String']>;
+  limit: Scalars['Int'];
+};
+
+
 export type QueryHackArgs = {
   id: Scalars['String'];
+};
+
+
+export type QueryVerifiedHacksBySearchTermArgs = {
+  searchTerm: Scalars['String'];
+  cursor?: Maybe<Scalars['String']>;
+  limit: Scalars['Int'];
+};
+
+
+export type QueryUserLikedHacksArgs = {
+  cursor?: Maybe<Scalars['String']>;
+  limit: Scalars['Int'];
 };
 
 export type UpdateHackInput = {
@@ -181,9 +206,18 @@ export type UsernamePasswordInput = {
   password: Scalars['String'];
 };
 
+export type HackInfoFragment = (
+  { __typename?: 'Hack' }
+  & Pick<Hack, 'id' | 'title' | 'category' | 'updatedAt' | 'duration' | 's3Url'>
+  & { creator: (
+    { __typename?: 'User' }
+    & Pick<User, 'id' | 'username'>
+  ) }
+);
+
 export type HackSnippetFragment = (
   { __typename?: 'Hack' }
-  & Pick<Hack, 'id' | 'title' | 'category' | 'descriptionSnippet' | 'points' | 'voteStatus' | 'duration' | 'updates' | 's3Url' | 'createdAt' | 'updatedAt'>
+  & Pick<Hack, 'id' | 'title' | 'category' | 'body' | 'descriptionSnippet' | 'points' | 'voteStatus' | 'duration' | 'updates' | 's3Url' | 'createdAt' | 'updatedAt'>
   & { creator: (
     { __typename?: 'User' }
     & RegularUserFragment
@@ -197,7 +231,7 @@ export type RegularErrorFragment = (
 
 export type RegularHackFragment = (
   { __typename?: 'Hack' }
-  & Pick<Hack, 'id' | 'title' | 'category' | 'description' | 'body' | 'updates' | 'points' | 'voteStatus' | 'duration' | 'createdAt' | 'updatedAt'>
+  & Pick<Hack, 'id' | 'title' | 'category' | 'description' | 'body' | 'updates' | 'points' | 's3Url' | 'voteStatus' | 'duration' | 'createdAt' | 'updatedAt'>
   & { creator: (
     { __typename?: 'User' }
     & RegularUserFragment
@@ -354,6 +388,18 @@ export type VoteMutation = (
   & Pick<Mutation, 'vote'>
 );
 
+export type AllHacksQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AllHacksQuery = (
+  { __typename?: 'Query' }
+  & { allHacks: Array<(
+    { __typename?: 'Hack' }
+    & Pick<Hack, 'verified' | 'body'>
+    & HackSnippetFragment
+  )> }
+);
+
 export type CurrentUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -375,6 +421,36 @@ export type HackQuery = (
   & { hack?: Maybe<(
     { __typename?: 'Hack' }
     & RegularHackFragment
+  )> }
+);
+
+export type VerifiedHacksBySearchTermQueryVariables = Exact<{
+  limit: Scalars['Int'];
+  cursor?: Maybe<Scalars['String']>;
+  searchTerm: Scalars['String'];
+}>;
+
+
+export type VerifiedHacksBySearchTermQuery = (
+  { __typename?: 'Query' }
+  & { verifiedHacksBySearchTerm: (
+    { __typename?: 'PaginatedHacks' }
+    & Pick<PaginatedHacks, 'hasMore'>
+    & { hacks: Array<(
+      { __typename?: 'Hack' }
+      & HackSnippetFragment
+    )> }
+  ) }
+);
+
+export type MostLikedHacksQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MostLikedHacksQuery = (
+  { __typename?: 'Query' }
+  & { mostLikedHacks: Array<(
+    { __typename?: 'Hack' }
+    & HackInfoFragment
   )> }
 );
 
@@ -408,6 +484,24 @@ export type UserHacksQuery = (
   )> }
 );
 
+export type UserLikedHacksQueryVariables = Exact<{
+  limit: Scalars['Int'];
+  cursor?: Maybe<Scalars['String']>;
+}>;
+
+
+export type UserLikedHacksQuery = (
+  { __typename?: 'Query' }
+  & { userLikedHacks: (
+    { __typename?: 'PaginatedHacks' }
+    & Pick<PaginatedHacks, 'hasMore'>
+    & { hacks: Array<(
+      { __typename?: 'Hack' }
+      & HackSnippetFragment
+    )> }
+  ) }
+);
+
 export type VerifiedHacksQueryVariables = Exact<{
   limit: Scalars['Int'];
   cursor?: Maybe<Scalars['String']>;
@@ -426,6 +520,39 @@ export type VerifiedHacksQuery = (
   ) }
 );
 
+export type VerifiedHacksByCategoryQueryVariables = Exact<{
+  limit: Scalars['Int'];
+  cursor?: Maybe<Scalars['String']>;
+  category: Scalars['String'];
+}>;
+
+
+export type VerifiedHacksByCategoryQuery = (
+  { __typename?: 'Query' }
+  & { verifiedHacksByCategory: (
+    { __typename?: 'PaginatedHacks' }
+    & Pick<PaginatedHacks, 'hasMore'>
+    & { hacks: Array<(
+      { __typename?: 'Hack' }
+      & HackSnippetFragment
+    )> }
+  ) }
+);
+
+export const HackInfoFragmentDoc = gql`
+    fragment HackInfo on Hack {
+  id
+  title
+  category
+  updatedAt
+  duration
+  s3Url
+  creator {
+    id
+    username
+  }
+}
+    `;
 export const RegularUserFragmentDoc = gql`
     fragment RegularUser on User {
   id
@@ -439,6 +566,7 @@ export const HackSnippetFragmentDoc = gql`
   id
   title
   category
+  body
   descriptionSnippet
   points
   voteStatus
@@ -461,6 +589,7 @@ export const RegularHackFragmentDoc = gql`
   body
   updates
   points
+  s3Url
   voteStatus
   duration
   creator {
@@ -600,6 +729,19 @@ export const VoteDocument = gql`
 export function useVoteMutation() {
   return Urql.useMutation<VoteMutation, VoteMutationVariables>(VoteDocument);
 };
+export const AllHacksDocument = gql`
+    query AllHacks {
+  allHacks {
+    ...HackSnippet
+    verified
+    body
+  }
+}
+    ${HackSnippetFragmentDoc}`;
+
+export function useAllHacksQuery(options: Omit<Urql.UseQueryArgs<AllHacksQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<AllHacksQuery>({ query: AllHacksDocument, ...options });
+};
 export const CurrentUserDocument = gql`
     query CurrentUser {
   currentUser {
@@ -621,6 +763,35 @@ export const HackDocument = gql`
 
 export function useHackQuery(options: Omit<Urql.UseQueryArgs<HackQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<HackQuery>({ query: HackDocument, ...options });
+};
+export const VerifiedHacksBySearchTermDocument = gql`
+    query VerifiedHacksBySearchTerm($limit: Int!, $cursor: String, $searchTerm: String!) {
+  verifiedHacksBySearchTerm(
+    limit: $limit
+    cursor: $cursor
+    searchTerm: $searchTerm
+  ) {
+    hacks {
+      ...HackSnippet
+    }
+    hasMore
+  }
+}
+    ${HackSnippetFragmentDoc}`;
+
+export function useVerifiedHacksBySearchTermQuery(options: Omit<Urql.UseQueryArgs<VerifiedHacksBySearchTermQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<VerifiedHacksBySearchTermQuery>({ query: VerifiedHacksBySearchTermDocument, ...options });
+};
+export const MostLikedHacksDocument = gql`
+    query MostLikedHacks {
+  mostLikedHacks {
+    ...HackInfo
+  }
+}
+    ${HackInfoFragmentDoc}`;
+
+export function useMostLikedHacksQuery(options: Omit<Urql.UseQueryArgs<MostLikedHacksQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<MostLikedHacksQuery>({ query: MostLikedHacksDocument, ...options });
 };
 export const UnverifiedHacksDocument = gql`
     query UnverifiedHacks($limit: Int!, $cursor: String) {
@@ -648,6 +819,20 @@ export const UserHacksDocument = gql`
 export function useUserHacksQuery(options: Omit<Urql.UseQueryArgs<UserHacksQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<UserHacksQuery>({ query: UserHacksDocument, ...options });
 };
+export const UserLikedHacksDocument = gql`
+    query UserLikedHacks($limit: Int!, $cursor: String) {
+  userLikedHacks(limit: $limit, cursor: $cursor) {
+    hacks {
+      ...HackSnippet
+    }
+    hasMore
+  }
+}
+    ${HackSnippetFragmentDoc}`;
+
+export function useUserLikedHacksQuery(options: Omit<Urql.UseQueryArgs<UserLikedHacksQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<UserLikedHacksQuery>({ query: UserLikedHacksDocument, ...options });
+};
 export const VerifiedHacksDocument = gql`
     query VerifiedHacks($limit: Int!, $cursor: String) {
   verifiedHacks(limit: $limit, cursor: $cursor) {
@@ -661,4 +846,18 @@ export const VerifiedHacksDocument = gql`
 
 export function useVerifiedHacksQuery(options: Omit<Urql.UseQueryArgs<VerifiedHacksQueryVariables>, 'query'> = {}) {
   return Urql.useQuery<VerifiedHacksQuery>({ query: VerifiedHacksDocument, ...options });
+};
+export const VerifiedHacksByCategoryDocument = gql`
+    query VerifiedHacksByCategory($limit: Int!, $cursor: String, $category: String!) {
+  verifiedHacksByCategory(limit: $limit, cursor: $cursor, category: $category) {
+    hacks {
+      ...HackSnippet
+    }
+    hasMore
+  }
+}
+    ${HackSnippetFragmentDoc}`;
+
+export function useVerifiedHacksByCategoryQuery(options: Omit<Urql.UseQueryArgs<VerifiedHacksByCategoryQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<VerifiedHacksByCategoryQuery>({ query: VerifiedHacksByCategoryDocument, ...options });
 };
