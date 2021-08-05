@@ -1,0 +1,12 @@
+query VerifiedHacksByCategory(
+	$limit: Int!
+	$cursor: String
+	$category: String!
+) {
+	verifiedHacksByCategory(limit: $limit, cursor: $cursor, category: $category) {
+		hacks {
+			...HackSnippet
+		}
+		hasMore
+	}
+}
