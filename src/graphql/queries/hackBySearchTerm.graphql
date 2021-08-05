@@ -1,0 +1,16 @@
+query VerifiedHacksBySearchTerm(
+	$limit: Int!
+	$cursor: String
+	$searchTerm: String!
+) {
+	verifiedHacksBySearchTerm(
+		limit: $limit
+		cursor: $cursor
+		searchTerm: $searchTerm
+	) {
+		hacks {
+			...HackSnippet
+		}
+		hasMore
+	}
+}
