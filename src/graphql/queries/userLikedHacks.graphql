@@ -1,0 +1,8 @@
+query UserLikedHacks($limit: Int!, $cursor: String) {
+	userLikedHacks(limit: $limit, cursor: $cursor) {
+		hacks {
+			...HackSnippet
+		}
+		hasMore
+	}
+}
