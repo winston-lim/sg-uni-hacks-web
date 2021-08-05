@@ -6,6 +6,7 @@ fragment RegularHack on Hack {
 	body
 	updates
 	points
+	s3Url
 	voteStatus
 	duration
 	creator {

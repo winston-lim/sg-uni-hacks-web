@@ -2,6 +2,7 @@ fragment HackSnippet on Hack {
 	id
 	title
 	category
+	body
 	descriptionSnippet
 	points
 	voteStatus

@@ -1,0 +1,12 @@
+fragment HackInfo on Hack {
+	id
+	title
+	category
+	updatedAt
+	duration
+	s3Url
+	creator {
+		id
+		username
+	}
+}
