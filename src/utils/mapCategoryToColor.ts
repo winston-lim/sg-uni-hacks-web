@@ -1,8 +1,8 @@
 export const categoryToColorMapping = {
 	general: "teal.200",
 	"note-taking": "blue.300",
-	"time-saver": "green.600",
-	university: "blackAlpha.500",
+	"time-saver": "yellow.400",
+	university: "grey",
 	education: "purple.200",
 	"time-management": "yellow.500",
 	health: "green.400",
