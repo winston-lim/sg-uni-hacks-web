@@ -1,0 +1,5 @@
+query MostLikedHacks {
+	mostLikedHacks {
+		...HackInfo
+	}
+}
