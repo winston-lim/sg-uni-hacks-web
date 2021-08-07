@@ -29,13 +29,13 @@ import Router from "next/router";
 import gql from "graphql-tag";
 import { isServer } from "./isServer";
 
-const invalidateAllVerifiedHacks = (cache: Cache) => {
+const invalidateverifiedHacksBySearchTerm = (cache: Cache) => {
 	const allFields = cache.inspectFields("Query");
 	const fieldInfos = allFields.filter(
-		(info) => info.fieldName === "verifiedHacks"
+		(info) => info.fieldName === "verifiedHacksBySearchTerm"
 	);
 	fieldInfos.forEach((fieldInfo) => {
-		cache.invalidate("Query", "verifiedHacks", fieldInfo.arguments);
+		cache.invalidate("Query", "verifiedHacksBySearchTerm", fieldInfo.arguments);
 	});
 };
 
@@ -54,6 +54,24 @@ const invalidateUserHacks = (cache: Cache) => {
 	const fieldInfos = allFields.filter((info) => info.fieldName === "userHacks");
 	fieldInfos.forEach((fieldInfo) => {
 		cache.invalidate("Query", "userHacks", fieldInfo.arguments);
+	});
+};
+
+const invalidateUserLikedHacks = (cache: Cache) => {
+	const allFields = cache.inspectFields("Query");
+	const fieldInfos = allFields.filter(
+		(info) => info.fieldName === "userLikedHacks"
+	);
+	fieldInfos.forEach((fieldInfo) => {
+		cache.invalidate("Query", "userLikedHacks", fieldInfo.arguments);
+	});
+};
+
+const invalidateAllHacks = (cache: Cache) => {
+	const allFields = cache.inspectFields("Query");
+	const fieldInfos = allFields.filter((info) => info.fieldName === "allHacks");
+	fieldInfos.forEach((fieldInfo) => {
+		cache.invalidate("Query", "allHacks", fieldInfo.arguments);
 	});
 };
 
@@ -80,7 +98,7 @@ export const cursorPagination = (): Resolver => {
 		info: ResolveInfo
 	) => {
 		const { parentKey: entityKey, fieldName } = info;
-		//entityKey = query; fieldName = hacks
+		//entityKey = query; fieldName = hacks | verifiedHacks etc
 		//cache.inspectFields() returns all the Queries
 		const allFields = cache.inspectFields(entityKey);
 		//fieldInfos returns all Queries that are hacks
@@ -96,18 +114,70 @@ export const cursorPagination = (): Resolver => {
 				entityKey,
 				`${fieldName}(${stringifyVariables(fieldArgs)})`
 			) as string,
-			"posts"
+			"hacks"
 		);
 		//info.partial tells cacheExchange whether or not to make the query request
-		//if in cache, do not make request
-		// if (!isInCache) {
-		// 	return undefined;
-		// }
+		//if not in cache, just proceed with the request
 		info.partial = !isInCache;
 
-		// If it is in the cache, then..
+		// otherwise, add the request data to the existing cache
 		const hacks: string[] = [];
 		let hasMore: boolean = true;
+
+		// resolve values from Queries of hacks
+		fieldInfos.forEach((fieldInfo) => {
+			const key = cache.resolve(entityKey, fieldInfo.fieldKey) as string;
+			const hack = cache.resolve(key, "hacks") as string[];
+			hacks.push(...hack);
+			const _hasMore = cache.resolve(key, "hasMore") as boolean;
+			if (!_hasMore) hasMore = _hasMore as boolean;
+		});
+		return {
+			__typename: "PaginatedHacks",
+			hasMore,
+			hacks,
+		};
+	};
+};
+
+export const cursorPaginationByFieldKey = (): Resolver => {
+	return (
+		_parent: DataField,
+		fieldArgs: Variables,
+		cache: Cache,
+		info: ResolveInfo
+	) => {
+		const { parentKey: entityKey, fieldName, parentFieldKey: fieldKey } = info;
+		//entityKey = Query; fieldName = hacks | verifiedHacks etc
+		//cache.inspectFields() returns all the Queries
+		const allFields = cache.inspectFields(entityKey);
+		//fieldInfos returns all Queries that are of a particular query and particular arguments
+		const fieldInfos = allFields.filter(
+			(info) =>
+				info.fieldName === fieldName &&
+				info.arguments!.category === fieldArgs.category
+		);
+		// if no data, return undefined
+		const size = fieldInfos.length;
+		if (size === 0) {
+			return undefined;
+		}
+		//check if a query is in cache
+		const isInCache = cache.resolve(
+			cache.resolve(
+				entityKey,
+				`${fieldName}(${stringifyVariables(fieldArgs)})`
+			) as string,
+			"hacks"
+		);
+		//info.partial tells cacheExchange whether or not to make the query request
+		//if not in cache, just proceed with the request
+		info.partial = !isInCache;
+
+		// otherwise, add the request data to the existing cache
+		const hacks: string[] = [];
+		let hasMore: boolean = true;
+
 		// resolve values from Queries of hacks
 		fieldInfos.forEach((fieldInfo) => {
 			const key = cache.resolve(entityKey, fieldInfo.fieldKey) as string;
@@ -148,8 +218,9 @@ export const createUrqlClient = (ssrExchange: any, ctx: any) => {
 				},
 				resolvers: {
 					Query: {
-						//change to verifiedHacks
-						unverifiedHacks: cursorPagination(),
+						verifiedHacksBySearchTerm: cursorPagination(),
+						verifiedHacksByCategory: cursorPaginationByFieldKey(),
+						userLikedHacks: cursorPaginationByFieldKey(),
 					},
 				},
 				updates: {
@@ -169,7 +240,8 @@ export const createUrqlClient = (ssrExchange: any, ctx: any) => {
 									}
 								}
 							);
-							invalidateAllVerifiedHacks(cache);
+							invalidateverifiedHacksBySearchTerm(cache);
+							invalidateUserHacks(cache);
 						},
 						register: (_result, args, cache, info) => {
 							typedUpdateQuery<RegisterMutation, CurrentUserQuery>(
@@ -194,6 +266,8 @@ export const createUrqlClient = (ssrExchange: any, ctx: any) => {
 								_result,
 								() => ({ currentUser: null })
 							);
+							invalidateverifiedHacksBySearchTerm(cache);
+							invalidateUserHacks(cache);
 						},
 						changePassword: (_result, args, cache, info) => {
 							typedUpdateQuery<ChangePasswordMutation, CurrentUserQuery>(
@@ -213,12 +287,20 @@ export const createUrqlClient = (ssrExchange: any, ctx: any) => {
 						},
 						createHack: (_result, args, cache, info) => {
 							invalidateUserHacks(cache);
+							invalidateverifiedHacksBySearchTerm(cache);
 							invalidateAllUnverifiedHacks(cache);
 						},
 						deleteHack: (_result, args, cache, info) => {
+							invalidateAllHacks(cache);
 							invalidateUserHacks(cache);
-							invalidateAllVerifiedHacks(cache);
+							invalidateverifiedHacksBySearchTerm(cache);
 							invalidateAllUnverifiedHacks(cache);
+						},
+						verifyHack: (_result, args, cache, info) => {
+							invalidateAllHacks(cache);
+							invalidateAllUnverifiedHacks(cache);
+							invalidateverifiedHacksBySearchTerm(cache);
+							invalidateUserHacks(cache);
 						},
 						vote: (_result, args, cache, info) => {
 							const { hackId, value } = args as VoteMutationVariables;
@@ -236,8 +318,8 @@ export const createUrqlClient = (ssrExchange: any, ctx: any) => {
 								if (data.voteStatus === value) {
 									return;
 								}
-								const newPoints =
-									data.points + (!data.voteStatus ? 1 : 2) * value;
+								console.log(data);
+								const newPoints = data.points + (value === 1 ? value : -1);
 								cache.writeFragment(
 									gql`
 										fragment __ on Hack {
@@ -248,6 +330,7 @@ export const createUrqlClient = (ssrExchange: any, ctx: any) => {
 									{ id: hackId, points: newPoints, voteStatus: value } as any
 								);
 							}
+							invalidateUserLikedHacks(cache);
 						},
 					},
 				},
