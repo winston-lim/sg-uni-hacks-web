@@ -62,6 +62,7 @@ const MySubmission = () => {
 	} else if (!fetching && !data?.userHacks) {
 		tableContent = <Tr>No submissions</Tr>;
 	} else {
+		console.log("data: ", data);
 		const rows = data?.userHacks.map((hack) => {
 			return (
 				<RowItem

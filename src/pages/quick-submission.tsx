@@ -84,10 +84,10 @@ export const quickSubmission: React.FC<quickSubmissionProps> = ({}) => {
 									description: "",
 									body: "",
 									documentFiles: [],
-									otherFiles: [],
+									coverImage: [],
 								}}
 								onSubmit={async (values, { setErrors }) => {
-									const { documentFiles, otherFiles, ...remainingValues } =
+									const { documentFiles, coverImage, ...remainingValues } =
 										values;
 									const hackInput: CreateHackInput = {
 										...remainingValues,
@@ -101,9 +101,9 @@ export const quickSubmission: React.FC<quickSubmissionProps> = ({}) => {
 										console.log("Uploaded document: ", response);
 										uploadLinks["documentLinks"] = response;
 									}
-									if (otherFiles.length > 0) {
-										const response = await uploadFileToS3(otherFiles, user!.id);
-										console.log("Uploaded others: ", response);
+									if (coverImage.length > 0) {
+										const response = await uploadFileToS3(coverImage, user!.id);
+										console.log("Uploaded coverImage: ", response);
 										uploadLinks["otherLinks"] = response;
 									}
 									if (
@@ -177,11 +177,13 @@ export const quickSubmission: React.FC<quickSubmissionProps> = ({}) => {
 										</Box>
 										<Box mt={4}>
 											<FileInputField
-												name="otherFiles"
-												placeholder="Upload other files"
-												label="upload other files"
+												name="coverImage"
+												placeholder="Upload cover image"
+												label="upload cover image"
 												colorConfig={colorConfig}
 												size={600}
+												onlyImage={true}
+												singleUpload={true}
 											/>
 										</Box>
 										{alert === "" ? null : (
