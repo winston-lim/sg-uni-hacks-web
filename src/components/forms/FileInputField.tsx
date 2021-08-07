@@ -22,6 +22,8 @@ type FileInputFieldProps = InputHTMLAttributes<HTMLInputElement> & {
 	name: string;
 	label: string;
 	colorConfig: ColorConfig;
+	onlyImage?: boolean;
+	singleUpload?: boolean;
 };
 
 export const FileInputField: React.FC<FileInputFieldProps> = ({
@@ -29,6 +31,8 @@ export const FileInputField: React.FC<FileInputFieldProps> = ({
 	size,
 	placeholder,
 	colorConfig,
+	onlyImage,
+	singleUpload,
 	...props
 }) => {
 	const [field, { error }, { setValue }] = useField(props);
@@ -70,8 +74,12 @@ export const FileInputField: React.FC<FileInputFieldProps> = ({
 				/>
 				<input
 					type="file"
+					accept={onlyImage ? "image/*" : undefined}
 					ref={inputRef}
 					onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+						if (singleUpload && files.length > 0) {
+							return;
+						}
 						setSelectedFiles([...files, e.target.files![0]]);
 						console.log(files);
 					}}
@@ -80,7 +88,12 @@ export const FileInputField: React.FC<FileInputFieldProps> = ({
 				/>
 				<Input
 					w={{ base: undefined, sm: undefined, md: size }}
-					onClick={() => inputRef.current!.click()}
+					onClick={() => {
+						if (singleUpload && files.length > 0) {
+							return;
+						}
+						inputRef.current!.click();
+					}}
 					value={getFileNames(files) || ""}
 					placeholder={placeholder}
 					bgColor={colorConfig.bgColor[colorMode]}
