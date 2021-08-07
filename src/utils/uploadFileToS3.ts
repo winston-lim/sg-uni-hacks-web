@@ -1,6 +1,6 @@
-export const uploadFileToS3 = async (file: File, userId: string) => {
+export const uploadFileToS3 = async (files: File[], userId: string) => {
 	let formData = new FormData();
-	formData.append("files", file);
+	files.forEach((file) => formData.append("files", file));
 	const response = await fetch(`http://localhost:5001/upload/SUH-${userId}`, {
 		method: "POST",
 		body: formData,
