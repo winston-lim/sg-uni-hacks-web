@@ -1,4 +1,4 @@
-import { Box, Button, Flex, Text } from "@chakra-ui/react";
+import { Box, Button, Flex, Text, useColorMode } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import React from "react";
 import { useRouter } from "next/router";
@@ -7,18 +7,26 @@ import { useRegisterMutation } from "../generated/graphql";
 import { withUrqlClient } from "next-urql";
 import { createUrqlClient } from "../utils/createUrqlClient";
 import { InputField } from "../components/forms/InputField";
-import { ColorModeWrapper } from "../components/layout/ColorModeWrapper";
 import { Main } from "../components/layout/Main";
 import { SizedBox } from "../components/layout/SizedBox";
 import { ResponsiveWrapper } from "../components/layout/ResponsiveWrapper";
 import { SizedHeading } from "../components/typography/SizedHeading";
 import { BasicFooter } from "../components/layout/BasicFooter";
+import { ColorConfig } from "../types/default";
 
 interface registerProps {}
 
 export const Register: React.FC<registerProps> = ({}) => {
 	const router = useRouter();
 	const [, register] = useRegisterMutation();
+	const { colorMode } = useColorMode();
+	const colorConfig: ColorConfig = {
+		colorMode: colorMode,
+		colorScheme: { dark: "blue", light: "teal" },
+		errorColor: { dark: "pink", light: "red" },
+		color: { dark: "white", light: "black" },
+		bgColor: { dark: "blue.200", light: "teal.300" },
+	};
 	return (
 		<>
 			<Main footer={<BasicFooter />}>
@@ -43,9 +51,15 @@ export const Register: React.FC<registerProps> = ({}) => {
 									name="username"
 									placeholder="username"
 									label="Username"
+									colorConfig={colorConfig}
 								/>
 								<Box mt={4}>
-									<InputField name="email" placeholder="email" label="Email" />
+									<InputField
+										name="email"
+										placeholder="email"
+										label="Email"
+										colorConfig={colorConfig}
+									/>
 								</Box>
 								<Box mt={4}>
 									<InputField
@@ -53,6 +67,7 @@ export const Register: React.FC<registerProps> = ({}) => {
 										placeholder="password"
 										label="Password"
 										type="password"
+										colorConfig={colorConfig}
 									/>
 								</Box>
 								<Button
@@ -67,7 +82,6 @@ export const Register: React.FC<registerProps> = ({}) => {
 						)}
 					</Formik>
 				</ResponsiveWrapper>
-				<Box h={{ base: 200, sm: 300, md: 450, lg: 500 }} bgColor="grey.800" />
 			</Main>
 		</>
 	);
