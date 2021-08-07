@@ -23,6 +23,7 @@ import {
 	useAllHacksQuery,
 	useDeleteHackMutation,
 	useVerifyHackMutation,
+	useVerifyUpdateMutation,
 } from "../generated/graphql";
 import { useEffect } from "react";
 import { RowItem } from "../components/data-display/RowItem";
@@ -35,6 +36,7 @@ const Submissions = () => {
 	const [alert, setAlert] = useState<string>("");
 	const [{ data, fetching }, getAllHacks] = useAllHacksQuery();
 	const [, verifyHack] = useVerifyHackMutation();
+	const [, verifyUpdate] = useVerifyUpdateMutation();
 	const [, deleteHack] = useDeleteHackMutation();
 	useEffect(() => {
 		getAllHacks();
@@ -73,7 +75,7 @@ const Submissions = () => {
 					deleteHack={deleteHack}
 					colorConfig={colorConfig}
 					setAlert={setAlert}
-					verifyHack={verifyHack}
+					verifyHack={hack.updates ? verifyUpdate : verifyHack}
 				/>
 			);
 		});
