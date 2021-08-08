@@ -12,7 +12,7 @@ import { FractionContainer } from "../components/layout/FractionContainer";
 import { useVerifiedHacksBySearchTermQuery } from "../generated/graphql";
 import { HackItem } from "../components/data-display/HackItem";
 import { ColorConfig, fallbackBackgroundUrl } from "../types/default";
-import { MainItem } from "../components/data-display/MainItem";
+import { SideBar } from "../components/data-display/SideBar";
 
 const Index = () => {
 	const [variables, setVariables] = useState({
@@ -120,7 +120,7 @@ const Index = () => {
 						col1={7}
 						col2={3}
 						child1={articleBlock!}
-						child2={<MainItem colorConfig={colorConfig} />}
+						child2={<SideBar colorConfig={colorConfig} />}
 					/>
 				</SizedWrapper>
 			</Main>

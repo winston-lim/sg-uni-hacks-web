@@ -3,7 +3,7 @@ import { withUrqlClient } from "next-urql";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { HackItem } from "../components/data-display/HackItem";
-import { MainItem } from "../components/data-display/MainItem";
+import { SideBar } from "../components/data-display/SideBar";
 import { BasicFooter } from "../components/layout/BasicFooter";
 import { FractionContainer } from "../components/layout/FractionContainer";
 import { Header } from "../components/layout/Header";
@@ -112,7 +112,7 @@ export const LikedPage: React.FC<LikedPageProps> = ({}) => {
 						col1={7}
 						col2={3}
 						child1={articleBlock!}
-						child2={<MainItem colorConfig={colorConfig} />}
+						child2={<SideBar colorConfig={colorConfig} />}
 					/>
 				</SizedWrapper>
 			</Main>
