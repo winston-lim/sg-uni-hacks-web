@@ -54,17 +54,25 @@ export const RowItem: React.FC<RowItemProps> = ({
 
 	const handleQuery = async (operation: any, args?: any) => {
 		const response = await operation(args);
-		const operationName = `${
-			operation === verifyHack ? "verifyHack" : "deleteHack"
-		}`;
 		if (response.error) {
 			setAlert(`error: ${response.error.message}`);
 			await delay(3000);
 			setAlert("");
-		} else if (response.data[operationName]) {
+			return;
+		}
+		const operationName = `${
+			operation !== verifyHack
+				? "deleteHack"
+				: response.data["verifyHack"]
+				? "verifyHack"
+				: "verifyUpdate"
+		}`;
+		if (response.data[operationName]) {
 			setAlert(
 				operationName === "verifyHack"
 					? "successfully verified hack"
+					: operationName === "verifyUpdate"
+					? "successfully updated hack"
 					: "sucessfully deleted hack"
 			);
 			console.log("success: ", response.data[operationName]);
@@ -117,7 +125,7 @@ export const RowItem: React.FC<RowItemProps> = ({
 			</Td>
 			{!!verifyHack ? (
 				<Td>
-					<Link href={`localhost:3000/update/${id}`}>
+					<Link href={`/update/${id}`}>
 						<u>Link</u>
 					</Link>
 				</Td>
@@ -159,7 +167,7 @@ export const RowItem: React.FC<RowItemProps> = ({
 						)}
 					</Popover>
 				) : !!verified ? (
-					<Link href={`localhost:3000/post/${id}`}>
+					<Link href={`/posts/${id}`}>
 						<u>Link</u>
 					</Link>
 				) : (
