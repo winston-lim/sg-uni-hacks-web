@@ -61,3 +61,11 @@
 	margin-inline-end: 0px;
 	font-weight: bold;
 }
+
+.notion-header {
+	display: none;
+}
+
+.notion-frame {
+	padding: 0px 20px !important;
+}
