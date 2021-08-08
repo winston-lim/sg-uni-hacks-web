@@ -1,9 +1,10 @@
 import { Button, Flex, Heading, useColorMode, Tag } from "@chakra-ui/react";
+import { GetStaticProps, GetStaticPropsContext } from "next";
 import { withUrqlClient } from "next-urql";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { HackItem } from "../../components/data-display/HackItem";
-import { MainItem } from "../../components/data-display/MainItem";
+import { SideBar } from "../../components/data-display/SideBar";
 import { BasicFooter } from "../../components/layout/BasicFooter";
 import { FractionContainer } from "../../components/layout/FractionContainer";
 import { Header } from "../../components/layout/Header";
@@ -13,13 +14,17 @@ import { SizedWrapper } from "../../components/layout/SizedWrapper";
 import { useVerifiedHacksByCategoryQuery } from "../../generated/graphql";
 import { ColorConfig, fallbackBackgroundUrl } from "../../types/default";
 import { createUrqlClient } from "../../utils/createUrqlClient";
-import { mapCategoryToColor } from "../../utils/mapCategoryToColor";
+import {
+	categoryToColorMapping,
+	mapCategoryToColor,
+} from "../../utils/mapCategoryToColor";
 
-interface PlanningPageProps {}
+interface EducationPageProps {}
 
-const PlanningPage: React.FC<PlanningPageProps> = ({}) => {
+const EducationPage: React.FC<EducationPageProps> = ({}) => {
 	const router = useRouter();
-	const category = "planning";
+	const category =
+		typeof router.query.category === "string" ? router.query.category : "";
 	const [cursor, setCursor] = useState<string | null>(null);
 	const variables = {
 		limit: 4,
@@ -77,6 +82,7 @@ const PlanningPage: React.FC<PlanningPageProps> = ({}) => {
 					router={router}
 					id={hack.id}
 					title={hack.title}
+					body={hack.body}
 					category={hack.category}
 					colorConfig={colorConfig}
 					descriptionSnippet={hack.descriptionSnippet}
@@ -126,14 +132,11 @@ const PlanningPage: React.FC<PlanningPageProps> = ({}) => {
 						col1={7}
 						col2={3}
 						child1={articleBlock!}
-						child2={<MainItem colorConfig={colorConfig} />}
+						child2={<SideBar colorConfig={colorConfig} />}
 					/>
 				</SizedWrapper>
 			</Main>
 		</>
 	);
 };
-
-export default withUrqlClient(createUrqlClient, { ssr: true })(
-	PlanningPage as any
-);
+export default withUrqlClient(createUrqlClient, { ssr: true })(EducationPage);
