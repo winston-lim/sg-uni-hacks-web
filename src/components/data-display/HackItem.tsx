@@ -14,7 +14,7 @@ import {
 import { NextRouter } from "next/router";
 import React, { useState } from "react";
 import { FaHeart } from "react-icons/fa";
-import { useVoteMutation } from "../../generated/graphql";
+import { useCurrentUserQuery, useVoteMutation } from "../../generated/graphql";
 import { ColorConfig } from "../../types/default";
 import { mapCategoryToColor } from "../../utils/mapCategoryToColor";
 import { SizedBox } from "../layout/SizedBox";
@@ -34,6 +34,7 @@ interface HackItemProps {
 	isLast: boolean;
 	creator: string;
 	voteStatus: number;
+	isLoggedIn: boolean;
 }
 export const HackItem: React.FC<HackItemProps> = ({
 	router,
@@ -50,6 +51,7 @@ export const HackItem: React.FC<HackItemProps> = ({
 	isLast,
 	creator,
 	voteStatus,
+	isLoggedIn,
 }) => {
 	const [{ fetching }, vote] = useVoteMutation();
 	const colorMode = colorConfig.colorMode;
@@ -59,9 +61,9 @@ export const HackItem: React.FC<HackItemProps> = ({
 
 	return (
 		<Box
-			px="10"
-			py="5"
-			w={{ base: 360, md: 700 }}
+			maxW="100%"
+			px={{ base: 5, md: 10 }}
+			py={{ base: 5, md: 10 }}
 			bgColor={colorConfig.accentColor![colorMode]}
 			color={colorConfig.color[colorMode]}
 			boxShadow="xl"
@@ -75,16 +77,17 @@ export const HackItem: React.FC<HackItemProps> = ({
 					</Flex>
 					<Image w="560px" src={coverPhoto}></Image>
 				</Stack>
-				<Flex direction="row" justifyItems="flex-start" w="100%">
+				<Flex direction="row" justifyItems="flex-start" maxW="100%">
 					<Text fontSize="md">{descriptionSnippet}...</Text>
 				</Flex>
 				<Flex
-					w="100%"
+					maxW="100%"
 					direction={{ base: "column", md: "row" }}
 					justifyContent={{ base: "flex-start", md: "space-between" }}
 				>
 					<HStack
-						w="100%"
+						maxW="100%"
+						my={5}
 						justifyContent="flex-start"
 						alignItems="flex-end"
 						spacing="5"
@@ -114,6 +117,7 @@ export const HackItem: React.FC<HackItemProps> = ({
 								});
 							}}
 							isLoading={fetching}
+							disabled={!isLoggedIn}
 						>
 							<Flex align="center">
 								<Text fontSize="xs" mr={1}>
@@ -135,7 +139,7 @@ export const HackItem: React.FC<HackItemProps> = ({
 						</Button>
 						<Button
 							size="sm"
-							aria-label="like"
+							aria-label="view"
 							colorScheme={colorConfig.colorScheme[colorMode]}
 							bgColor={colorConfig.bgColor[colorMode]}
 							color={colorConfig.color[colorMode]}
