@@ -89,19 +89,16 @@ const Submissions = () => {
 				<SizedBox height={10} />
 				<SizedWrapper
 					width={
-						{ base: "100vw", sm: "100vw", md: "800px", lg: "1200px" } as any
+						{ base: "100vw", sm: "100vw", md: "1000px", lg: "1600px" } as any
 					}
 				>
-					<Flex
-						direction="column"
-						maxW={{ base: 400, md: 1000 }}
-						alignItems="center"
-					>
+					<Flex direction="column" maxW="80%" mx="auto" alignItems="center">
 						<Heading mb={10} size={headerFontSize}>
 							all submissions
 						</Heading>
 						<Alert alert={alert} />
 						<Box
+							maxW="100%"
 							as={Table}
 							size={tableSizeVariant}
 							variant="striped"

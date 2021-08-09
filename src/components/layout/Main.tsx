@@ -27,7 +27,6 @@ export const Main: React.FC<MainProps> = (props: any) => {
 	}, []);
 	return (
 		<Flex
-			margin={0}
 			direction="column"
 			justify="space-between"
 			bg={bgColor[colorMode]}
@@ -36,7 +35,7 @@ export const Main: React.FC<MainProps> = (props: any) => {
 			maxW="100vw"
 			{...remainingProps}
 		>
-			<Box id="mainContentContainer" mb={10} px={5} mx="auto">
+			<Box id="mainContentContainer" px="auto" mb={10}>
 				{children}
 			</Box>
 			{mainContentId ? <Filler relativeContainerId={mainContentId} /> : null}

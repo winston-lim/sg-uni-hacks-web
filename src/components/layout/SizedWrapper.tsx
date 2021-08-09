@@ -10,7 +10,7 @@ export const SizedWrapper: React.FC<SizedWrapperProps> = ({
 	children,
 }) => {
 	return (
-		<Box maxW={width} alignItems="center">
+		<Box maxW={width} mx="auto" px={5}>
 			{children}
 		</Box>
 	);

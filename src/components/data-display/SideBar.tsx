@@ -37,7 +37,7 @@ export const SideBar: React.FC<SideBarProps> = ({ colorConfig }) => {
 	} else if (data?.mostLikedHacks) {
 		console.log("data: ", data);
 		mostLikedBody = (
-			<Stack w="100%">
+			<Stack maxW="100%">
 				{data!.mostLikedHacks.map((hack) => {
 					const links = hack.s3Url ? JSON.parse(hack.s3Url) : undefined;
 					const hasCoverImage = !!links?.otherLinks;
@@ -46,6 +46,7 @@ export const SideBar: React.FC<SideBarProps> = ({ colorConfig }) => {
 							key={hack.id}
 							id={hack.id}
 							title={hack.title}
+							body={hack.body}
 							category={hack.category}
 							creatorName={hack.creator.username}
 							duration={hack.duration}
@@ -63,10 +64,11 @@ export const SideBar: React.FC<SideBarProps> = ({ colorConfig }) => {
 	return (
 		<Stack
 			maxH="100%"
+			maxW="100%"
 			spacing={10}
 			divider={<StackDivider borderColor="grey.200" />}
 		>
-			<Flex direction="column" height="200">
+			<Flex direction="column">
 				<Text
 					mb={5}
 					fontSize="md"
@@ -74,7 +76,12 @@ export const SideBar: React.FC<SideBarProps> = ({ colorConfig }) => {
 				>
 					<u>RECOMMENDED CATEGORIES</u>
 				</Text>
-				<SimpleGrid w="max-content" columns={3} spacingX="3" spacingY="2">
+				<SimpleGrid
+					maxW="100%"
+					columns={{ base: 2, md: 3 }}
+					spacingX="3"
+					spacingY="2"
+				>
 					{Object.keys(categoryToColorMapping).map((category) => {
 						return (
 							<Box key={category}>
@@ -135,7 +142,7 @@ export const SideBar: React.FC<SideBarProps> = ({ colorConfig }) => {
 					Make a Quick submission
 				</Button>
 			</Flex>
-			<Flex direction="column" w="100%" justifyContent="center">
+			<Flex direction="column" maxW="100%" justifyContent="center">
 				<Text
 					mb={5}
 					fontSize="md"
