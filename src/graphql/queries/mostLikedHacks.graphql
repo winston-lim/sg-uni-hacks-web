@@ -1,5 +1,6 @@
 query MostLikedHacks {
 	mostLikedHacks {
 		...HackInfo
+		body
 	}
 }

@@ -450,6 +450,7 @@ export type MostLikedHacksQuery = (
   { __typename?: 'Query' }
   & { mostLikedHacks: Array<(
     { __typename?: 'Hack' }
+    & Pick<Hack, 'body'>
     & HackInfoFragment
   )> }
 );
@@ -786,6 +787,7 @@ export const MostLikedHacksDocument = gql`
     query MostLikedHacks {
   mostLikedHacks {
     ...HackInfo
+    body
   }
 }
     ${HackInfoFragmentDoc}`;
