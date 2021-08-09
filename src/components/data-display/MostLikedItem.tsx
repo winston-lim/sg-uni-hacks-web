@@ -5,6 +5,7 @@ import { ColorConfig } from "../../types/default";
 interface MostLikedItemProps {
 	id: string;
 	title: string;
+	body: string;
 	category: string;
 	updatedAt: string;
 	duration: number;
@@ -17,6 +18,7 @@ export const MostLikedItem: React.FC<MostLikedItemProps> = ({
 	id,
 	title,
 	category,
+	body,
 	updatedAt,
 	duration,
 	creatorName,
@@ -27,7 +29,7 @@ export const MostLikedItem: React.FC<MostLikedItemProps> = ({
 	const date = new Date();
 	date.setTime(parseInt(updatedAt));
 	return (
-		<HStack align="flex-start" w="100%" spacing={5}>
+		<HStack align="flex-start" maxW="100%" spacing={5}>
 			<Image boxSize="100" src={coverImage}></Image>
 			<Stack w="100%" color={colorConfig.color[colorMode]} spacing={1}>
 				<Text
