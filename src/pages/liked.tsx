@@ -18,7 +18,7 @@ import { useIsAuth } from "../utils/useIsAuth";
 interface LikedPageProps {}
 
 export const LikedPage: React.FC<LikedPageProps> = ({}) => {
-	useIsAuth();
+	const user = useIsAuth();
 	const router = useRouter();
 	const [cursor, setCursor] = useState<string | null>(null);
 	const variables = {
@@ -74,6 +74,7 @@ export const LikedPage: React.FC<LikedPageProps> = ({}) => {
 					coverPhoto={hasCoverImage ? links.otherLinks : fallbackBackgroundUrl}
 					key={hack.id}
 					isLast={hacks![hacks!.length - 1] === hack}
+					isLoggedIn={!!user}
 				/>
 			);
 		});

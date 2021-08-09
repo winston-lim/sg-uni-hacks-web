@@ -13,7 +13,6 @@ import {
 	AlertIcon,
 	Alert,
 	AlertTitle,
-	CloseButton,
 } from "@chakra-ui/react";
 import { CheckCircleIcon } from "@chakra-ui/icons";
 import { Main } from "../components/layout/Main";
@@ -25,10 +24,8 @@ import { createUrqlClient } from "../utils/createUrqlClient";
 import { BasicFooter } from "../components/layout/BasicFooter";
 import { SizedWrapper } from "../components/layout/SizedWrapper";
 import { FractionContainer } from "../components/layout/FractionContainer";
-import EditorJS from "@editorjs/editorjs";
 import dynamic from "next/dynamic";
-import { EditorContainer } from "../components/layout/EditorContainer";
-import ReactEditor, { EditorProps } from "../components/data-display/Editor";
+import { EditorProps } from "../components/data-display/Editor";
 import { useIsAuth } from "../utils/useIsAuth";
 import { useRouter } from "next/router";
 import { ColorConfig } from "../types/default";
@@ -163,7 +160,9 @@ const Create = () => {
 					<Flex mb={4} w="100%" justifyContent="center">
 						<Alert
 							maxW={{ base: "450px", md: "800px", lg: "1000px" }}
-							status="error"
+							status={
+								alert.split(":")[0].includes("error") ? "error" : "success"
+							}
 						>
 							<AlertIcon />
 							<AlertTitle mr={2}>{alert}</AlertTitle>
