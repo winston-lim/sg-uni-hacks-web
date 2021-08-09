@@ -9,7 +9,10 @@ import { BasicFooter } from "../components/layout/BasicFooter";
 import { SizedWrapper } from "../components/layout/SizedWrapper";
 import { useRouter } from "next/router";
 import { FractionContainer } from "../components/layout/FractionContainer";
-import { useVerifiedHacksBySearchTermQuery } from "../generated/graphql";
+import {
+	useCurrentUserQuery,
+	useVerifiedHacksBySearchTermQuery,
+} from "../generated/graphql";
 import { HackItem } from "../components/data-display/HackItem";
 import { ColorConfig, fallbackBackgroundUrl } from "../types/default";
 import { SideBar } from "../components/data-display/SideBar";
@@ -32,6 +35,12 @@ const Index = () => {
 	const [{ data, fetching }] = useVerifiedHacksBySearchTermQuery({
 		variables,
 	});
+	const [{ data: currentUserData, fetching: fetchingCurrentUser }] =
+		useCurrentUserQuery();
+	let isLoggedIn = false;
+	if (!fetchingCurrentUser && currentUserData?.currentUser) {
+		isLoggedIn = !!currentUserData?.currentUser;
+	}
 
 	const router = useRouter();
 	const { colorMode } = useColorMode();
@@ -78,11 +87,12 @@ const Index = () => {
 					voteStatus={hack.voteStatus!}
 					key={hack.id}
 					isLast={hacks![hacks!.length - 1] === hack}
+					isLoggedIn={isLoggedIn}
 				/>
 			);
 		});
 		articleBlock = (
-			<Flex align="center" mb={10} direction="column">
+			<Flex direction="column" maxW="100%" align="center" mb={10}>
 				{dataItems}
 				{data && data.verifiedHacksBySearchTerm.hasMore ? (
 					<Button
@@ -97,7 +107,6 @@ const Index = () => {
 							});
 						}}
 						isLoading={fetching}
-						m="auto"
 						my={8}
 					>
 						load more...
@@ -113,7 +122,7 @@ const Index = () => {
 				<SizedBox height={5} />
 				<SizedWrapper
 					width={
-						{ base: "100vw", sm: "100vw", md: "800px", lg: "1200px" } as any
+						{ base: "100vw", sm: "100vw", md: "1000px", lg: "1600px" } as any
 					}
 				>
 					<FractionContainer

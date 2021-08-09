@@ -11,7 +11,10 @@ import { Header } from "../../components/layout/Header";
 import { Main } from "../../components/layout/Main";
 import { SizedBox } from "../../components/layout/SizedBox";
 import { SizedWrapper } from "../../components/layout/SizedWrapper";
-import { useVerifiedHacksByCategoryQuery } from "../../generated/graphql";
+import {
+	useCurrentUserQuery,
+	useVerifiedHacksByCategoryQuery,
+} from "../../generated/graphql";
 import { ColorConfig, fallbackBackgroundUrl } from "../../types/default";
 import { createUrqlClient } from "../../utils/createUrqlClient";
 import {
@@ -34,6 +37,12 @@ const EducationPage: React.FC<EducationPageProps> = ({}) => {
 	const [{ data, fetching }] = useVerifiedHacksByCategoryQuery({
 		variables,
 	});
+	const [{ data: currentUserData, fetching: fetchingCurrentUser }] =
+		useCurrentUserQuery();
+	let isLoggedIn = false;
+	if (!fetchingCurrentUser && currentUserData?.currentUser) {
+		isLoggedIn = !!currentUserData?.currentUser;
+	}
 
 	const { colorMode } = useColorMode();
 	const colorConfig: ColorConfig = {
@@ -93,11 +102,12 @@ const EducationPage: React.FC<EducationPageProps> = ({}) => {
 					coverPhoto={hasCoverImage ? links.otherLinks : fallbackBackgroundUrl}
 					key={hack.id}
 					isLast={hacks![hacks!.length - 1] === hack}
+					isLoggedIn={isLoggedIn}
 				/>
 			);
 		});
 		articleBlock = (
-			<Flex align="center" mb={10} direction="column">
+			<Flex align="center" maxw="100%" mb={10} direction="column">
 				{dataItems}
 				{data && data!.verifiedHacksByCategory.hasMore ? (
 					<Button
@@ -125,7 +135,7 @@ const EducationPage: React.FC<EducationPageProps> = ({}) => {
 				<SizedBox height={5} />
 				<SizedWrapper
 					width={
-						{ base: "100vw", sm: "100vw", md: "800px", lg: "1200px" } as any
+						{ base: "100vw", sm: "100vw", md: "1000px", lg: "1600px" } as any
 					}
 				>
 					<FractionContainer
