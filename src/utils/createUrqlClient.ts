@@ -29,6 +29,16 @@ import Router from "next/router";
 import gql from "graphql-tag";
 import { isServer } from "./isServer";
 
+const invalidateCacheByFieldName = (fieldName: string, cache: Cache) => {
+	const allFields = cache.inspectFields("Query");
+	const fieldInfos = allFields.filter((info) => {
+		return info.fieldName === fieldName;
+	});
+	fieldInfos.forEach((fieldInfo) => {
+		cache.invalidate("Query", fieldName, fieldInfo.arguments);
+	});
+};
+
 const invalidateverifiedHacksBySearchTerm = (cache: Cache) => {
 	const allFields = cache.inspectFields("Query");
 	const fieldInfos = allFields.filter(
@@ -240,8 +250,9 @@ export const createUrqlClient = (ssrExchange: any, ctx: any) => {
 									}
 								}
 							);
-							invalidateverifiedHacksBySearchTerm(cache);
-							invalidateUserHacks(cache);
+							invalidateCacheByFieldName("verifiedHacksBySearchTerm", cache);
+							invalidateCacheByFieldName("userHacks", cache);
+							invalidateCacheByFieldName("mostLikedHacks", cache);
 						},
 						register: (_result, args, cache, info) => {
 							typedUpdateQuery<RegisterMutation, CurrentUserQuery>(
@@ -266,8 +277,8 @@ export const createUrqlClient = (ssrExchange: any, ctx: any) => {
 								_result,
 								() => ({ currentUser: null })
 							);
-							invalidateverifiedHacksBySearchTerm(cache);
-							invalidateUserHacks(cache);
+							invalidateCacheByFieldName("verifiedHacksBySearchTerm", cache);
+							invalidateCacheByFieldName("userHacks", cache);
 						},
 						changePassword: (_result, args, cache, info) => {
 							typedUpdateQuery<ChangePasswordMutation, CurrentUserQuery>(
@@ -286,21 +297,22 @@ export const createUrqlClient = (ssrExchange: any, ctx: any) => {
 							);
 						},
 						createHack: (_result, args, cache, info) => {
-							invalidateUserHacks(cache);
-							invalidateverifiedHacksBySearchTerm(cache);
-							invalidateAllUnverifiedHacks(cache);
+							invalidateCacheByFieldName("verifiedHacksBySearchTerm", cache);
+							invalidateCacheByFieldName("userHacks", cache);
+							invalidateCacheByFieldName("unverifiedHacks", cache);
+							invalidateCacheByFieldName("allHacks", cache);
 						},
 						deleteHack: (_result, args, cache, info) => {
-							invalidateAllHacks(cache);
-							invalidateUserHacks(cache);
-							invalidateverifiedHacksBySearchTerm(cache);
-							invalidateAllUnverifiedHacks(cache);
+							invalidateCacheByFieldName("verifiedHacksBySearchTerm", cache);
+							invalidateCacheByFieldName("userHacks", cache);
+							invalidateCacheByFieldName("unverifiedHacks", cache);
+							invalidateCacheByFieldName("allHacks", cache);
 						},
 						verifyHack: (_result, args, cache, info) => {
-							invalidateAllHacks(cache);
-							invalidateAllUnverifiedHacks(cache);
-							invalidateverifiedHacksBySearchTerm(cache);
-							invalidateUserHacks(cache);
+							invalidateCacheByFieldName("verifiedHacksBySearchTerm", cache);
+							invalidateCacheByFieldName("userHacks", cache);
+							invalidateCacheByFieldName("unverifiedHacks", cache);
+							invalidateCacheByFieldName("allHacks", cache);
 						},
 						vote: (_result, args, cache, info) => {
 							const { hackId, value } = args as VoteMutationVariables;
@@ -330,7 +342,8 @@ export const createUrqlClient = (ssrExchange: any, ctx: any) => {
 									{ id: hackId, points: newPoints, voteStatus: value } as any
 								);
 							}
-							invalidateUserLikedHacks(cache);
+							invalidateCacheByFieldName("userLikedHacks", cache);
+							invalidateCacheByFieldName("mostLikedHacks", cache);
 						},
 					},
 				},
