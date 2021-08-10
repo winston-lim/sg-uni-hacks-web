@@ -26,6 +26,7 @@ export const DarkModeSwitch: React.FC<DarkModeSwitchProps> = ({
 			<Switch isChecked={isDark} onChange={toggleColorMode} />
 			<Icon
 				as={FaMoon}
+				color="white"
 				display={isDark ? "block" : "none"}
 				transition="color 0.2s"
 				w="5"
