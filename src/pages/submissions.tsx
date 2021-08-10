@@ -29,7 +29,6 @@ import { useEffect } from "react";
 import { RowItem } from "../components/data-display/RowItem";
 import { ColorConfig } from "../types/default";
 import { Alert } from "../components/overlay/Alert";
-import { useRouter } from "next/router";
 
 const Submissions = () => {
 	const headerFontSize = useBreakpointValue({ base: "lg", md: "2xl" });
@@ -103,6 +102,7 @@ const Submissions = () => {
 							size={tableSizeVariant}
 							variant="striped"
 							colorScheme={colorConfig.colorScheme[colorMode]}
+							id="chakra-table"
 						>
 							<Box as={TableCaption}>
 								<i>{`number of submissions: ${tableRows}`}</i>
