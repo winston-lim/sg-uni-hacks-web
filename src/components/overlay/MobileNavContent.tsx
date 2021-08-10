@@ -59,7 +59,7 @@ export const MobileNavContent: React.FC<MobileNavContentProps> = ({
 		drawerContent = (
 			<VStack alignItems="flex-start">
 				<DrawerItem title="login" href="/login" />
-				<DrawerItem title="about" href="/" />
+				<DrawerItem title="about" href="/about" />
 			</VStack>
 		);
 		footerContent = (
@@ -67,6 +67,7 @@ export const MobileNavContent: React.FC<MobileNavContentProps> = ({
 				size="lg"
 				onClick={async () => {
 					router.push("/login");
+					onClose();
 				}}
 			>
 				Login
@@ -75,10 +76,9 @@ export const MobileNavContent: React.FC<MobileNavContentProps> = ({
 	} else {
 		drawerContent = (
 			<VStack alignItems="flex-start">
-				<DrawerItem title="create a hack" href="/" />
-				<DrawerItem title="about" href="/" />
-				<DrawerItem title="profile" href="" />
-				<DrawerItem title="submissions" href="" />
+				<DrawerItem title="contribute" href="/quick-submission" />
+				<DrawerItem title="about" href="/about" />
+				<DrawerItem title="my submissions" href="/my-submissions" />
 			</VStack>
 		);
 		footerContent = (
@@ -89,7 +89,10 @@ export const MobileNavContent: React.FC<MobileNavContentProps> = ({
 					size="lg"
 					onClick={async () => {
 						await logout();
+						router.push("/");
+						onClose();
 					}}
+					isLoading={fetchingLogout}
 				>
 					Logout
 				</Button>
