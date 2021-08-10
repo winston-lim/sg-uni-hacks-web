@@ -77,11 +77,11 @@ export const HackItem: React.FC<HackItemProps> = ({
 					</Flex>
 					<Image w="560px" src={coverPhoto}></Image>
 				</Stack>
-				<Flex direction="row" justifyItems="flex-start" maxW="100%">
+				<Flex direction="row" justifyItems="flex-start" w="100%">
 					<Text fontSize="md">{descriptionSnippet}...</Text>
 				</Flex>
 				<Flex
-					maxW="100%"
+					w="100%"
 					direction={{ base: "column", md: "row" }}
 					justifyContent={{ base: "flex-start", md: "space-between" }}
 				>
@@ -100,7 +100,9 @@ export const HackItem: React.FC<HackItemProps> = ({
 							bgColor={mapCategoryToColor(category)}
 							fontSize="x-small"
 						>
-							{category.toUpperCase()}
+							{category === "technology"
+								? "tech-nology".toUpperCase()
+								: category.toUpperCase()}
 						</Tag>
 					</HStack>
 					<HStack spacing={3}>
@@ -148,7 +150,7 @@ export const HackItem: React.FC<HackItemProps> = ({
 							}}
 							boxShadow={colorMode === "light" ? "lg" : "inner"}
 						>
-							{"View full article >>"}
+							{"View full >>"}
 						</Button>
 					</HStack>
 				</Flex>
