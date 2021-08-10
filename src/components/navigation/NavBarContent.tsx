@@ -9,7 +9,7 @@ import {
 	Tooltip,
 } from "@chakra-ui/react";
 import React from "react";
-import { FaHeart, FaFile } from "react-icons/fa";
+import { FaHeart, FaFile, FaInfoCircle } from "react-icons/fa";
 import { DarkModeSwitch } from "../icons/DarkModeSwitch";
 import NextLink from "next/link";
 import { CurrentUserQuery } from "../../generated/graphql";
@@ -95,6 +95,20 @@ export const NavBarContent: React.FC<NavBarContentProps> = ({
 						>
 							<Icon
 								as={GithubIcon}
+								display="block"
+								transition="color 0.2s"
+								w="5"
+								h="5"
+								_hover={{ color: "gray.600" }}
+							/>
+						</Link>
+					</span>
+				</Tooltip>
+				<Tooltip label="About">
+					<span>
+						<Link aria-label="Go to SUH About page" href="/about">
+							<Icon
+								as={FaInfoCircle}
 								display="block"
 								transition="color 0.2s"
 								w="5"
