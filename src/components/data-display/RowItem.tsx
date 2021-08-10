@@ -83,11 +83,13 @@ export const RowItem: React.FC<RowItemProps> = ({
 		}
 	};
 	return (
-		<Tr key={id}>
-			<Td>{title}</Td>
-			<Td>{description === "" ? "NIL" : description + "..."}</Td>
-			<Td>{date.toLocaleString()}</Td>
-			<Td>
+		<Tr key={id} id="chakra-table-row">
+			<Td label="title">{title}</Td>
+			<Td label="description">
+				{description === "" ? "NIL" : description + "..."}
+			</Td>
+			<Td label="created at">{date.toLocaleString()}</Td>
+			<Td label="file upload">
 				{fileUploadLinks ? (
 					<Stack spacing={5}>
 						{fileUploadLinks.documentLinks ? (
@@ -120,17 +122,17 @@ export const RowItem: React.FC<RowItemProps> = ({
 					<SmallCloseIcon />
 				)}
 			</Td>
-			<Td>
+			<Td label="verified">
 				{!!verified ? <CheckCircleIcon color="green" /> : <SmallCloseIcon />}
 			</Td>
 			{!!verifyHack ? (
-				<Td>
+				<Td label="link to update">
 					<Link href={`/update/${id}`}>
 						<u>Link</u>
 					</Link>
 				</Td>
 			) : null}
-			<Td>
+			<Td label={!!verifyHack ? "verify" : "link to view"}>
 				{!!verifyHack ? (
 					<Popover>
 						{({ onClose }) => (
@@ -175,7 +177,7 @@ export const RowItem: React.FC<RowItemProps> = ({
 				)}
 			</Td>
 
-			<Td>
+			<Td label="delete">
 				<Popover>
 					{({ onClose }) => (
 						<>
