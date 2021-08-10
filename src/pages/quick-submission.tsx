@@ -30,6 +30,7 @@ import {
 } from "../utils/handleGraphqlResponse";
 import { uploadFileToS3 } from "../utils/uploadFileToS3";
 import { useIsAuth } from "../utils/useIsAuth";
+import { QuickSubmissionValidationSchema } from "../utils/validationSchemas";
 
 interface quickSubmissionProps {}
 
@@ -78,6 +79,7 @@ export const quickSubmission: React.FC<quickSubmissionProps> = ({}) => {
 						</Flex>
 						<Flex maxW={{ base: "450px", md: "500px", lg: "600px" }} pt={10}>
 							<Formik
+								validationSchema={QuickSubmissionValidationSchema}
 								initialValues={{
 									title: "",
 									category: "",
@@ -87,10 +89,37 @@ export const quickSubmission: React.FC<quickSubmissionProps> = ({}) => {
 									coverImage: [],
 								}}
 								onSubmit={async (values, { setErrors }) => {
-									const { documentFiles, coverImage, ...remainingValues } =
-										values;
+									const {
+										documentFiles,
+										coverImage,
+										description,
+										body,
+										...remainingValues
+									} = values;
+									if (
+										documentFiles.length < 1 &&
+										(description.length === 0 || body.length === 0)
+									) {
+										return setErrors({
+											description:
+												"if no document is uploaded, a description and body is required",
+											body: "if no document is uploaded, a description and body is required",
+										});
+									}
+									if (description.length < 15 && documentFiles.length === 0) {
+										return setErrors({
+											description: "description is too short",
+										});
+									}
+									if (body.length < 20 && documentFiles.length === 0) {
+										return setErrors({
+											body: "body is too short",
+										});
+									}
 									const hackInput: CreateHackInput = {
 										...remainingValues,
+										description,
+										body,
 									};
 									const uploadLinks = {} as any;
 									if (documentFiles.length > 0) {
