@@ -1,10 +1,4 @@
 import {
-	Link as ChakraLink,
-	Text,
-	Code,
-	List,
-	ListIcon,
-	ListItem,
 	Box,
 	Flex,
 	Heading,
@@ -12,14 +6,11 @@ import {
 	Table,
 	TableCaption,
 	Tbody,
-	Td,
-	Tfoot,
 	Th,
 	Thead,
 	Tr,
 	useColorMode,
 } from "@chakra-ui/react";
-import { CheckCircleIcon, LinkIcon } from "@chakra-ui/icons";
 import { Main } from "../components/layout/Main";
 import React, { useState } from "react";
 import { SizedBox } from "../components/layout/SizedBox";
@@ -89,14 +80,10 @@ const MySubmission = () => {
 				<SizedBox height={10} />
 				<SizedWrapper
 					width={
-						{ base: "100vw", sm: "100vw", md: "800px", lg: "1200px" } as any
+						{ base: "100vw", sm: "100vw", md: "1000px", lg: "1600px" } as any
 					}
 				>
-					<Flex
-						direction="column"
-						maxW={{ base: 400, md: 1000 }}
-						alignItems="center"
-					>
+					<Flex direction="column" maxW="80%" mx="auto" alignItems="center">
 						<Heading mb={10} size={headerFontSize}>
 							my submissions
 						</Heading>
@@ -106,6 +93,7 @@ const MySubmission = () => {
 							size={tableSizeVariant}
 							variant="striped"
 							colorScheme={colorConfig.colorScheme[colorMode]}
+							id="chakra-table"
 						>
 							<Box as={TableCaption}>
 								<i>{`number of submissions: ${tableRows}`}</i>
