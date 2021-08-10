@@ -66,7 +66,6 @@ export type Mutation = {
 
 
 export type MutationRegisterArgs = {
-  admin?: Maybe<Scalars['Boolean']>;
   options: UsernamePasswordInput;
 };
 
@@ -325,7 +324,6 @@ export type LogoutMutation = (
 
 export type RegisterMutationVariables = Exact<{
   options: UsernamePasswordInput;
-  admin?: Maybe<Scalars['Boolean']>;
 }>;
 
 
@@ -678,8 +676,8 @@ export function useLogoutMutation() {
   return Urql.useMutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument);
 };
 export const RegisterDocument = gql`
-    mutation Register($options: UsernamePasswordInput!, $admin: Boolean) {
-  register(options: $options, admin: $admin) {
+    mutation Register($options: UsernamePasswordInput!) {
+  register(options: $options) {
     ...RegularUserResponse
   }
 }
