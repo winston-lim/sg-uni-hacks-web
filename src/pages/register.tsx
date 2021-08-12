@@ -12,9 +12,9 @@ import { SizedBox } from "../components/layout/SizedBox";
 import { ResponsiveWrapper } from "../components/layout/ResponsiveWrapper";
 import { SizedHeading } from "../components/typography/SizedHeading";
 import { BasicFooter } from "../components/layout/BasicFooter";
-import { ColorConfig } from "../types/default";
 import { DarkModeSwitch } from "../components/icons/DarkModeSwitch";
 import { RegistrationValidationSchema } from "../utils/validationSchemas";
+import { ColorConfig } from "../types/ColorConfig";
 
 interface registerProps {}
 
