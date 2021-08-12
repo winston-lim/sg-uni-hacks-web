@@ -1,4 +1,5 @@
 import { Cache, QueryInput } from "@urql/exchange-graphcache";
+//typed implementation of the default updateQuery from urql
 export function typedUpdateQuery<Result, Query>(
 	cache: Cache,
 	qi: QueryInput,
