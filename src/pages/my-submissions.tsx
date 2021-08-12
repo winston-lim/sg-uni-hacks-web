@@ -22,8 +22,8 @@ import { SizedWrapper } from "../components/layout/SizedWrapper";
 import { useDeleteHackMutation, useUserHacksQuery } from "../generated/graphql";
 import { useEffect } from "react";
 import { RowItem } from "../components/data-display/RowItem";
-import { ColorConfig } from "../types/default";
 import { Alert } from "../components/overlay/Alert";
+import { ColorConfig } from "../types/ColorConfig";
 
 const MySubmission = () => {
 	const headerFontSize = useBreakpointValue({ base: "lg", md: "2xl" });
