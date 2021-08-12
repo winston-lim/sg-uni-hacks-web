@@ -22,7 +22,7 @@ import { Main } from "../components/layout/Main";
 import { ResponsiveWrapper } from "../components/layout/ResponsiveWrapper";
 import { SizedBox } from "../components/layout/SizedBox";
 import { CreateHackInput, useCreateHackMutation } from "../generated/graphql";
-import { ColorConfig } from "../types/default";
+import { ColorConfig } from "../types/ColorConfig";
 import { createUrqlClient } from "../utils/createUrqlClient";
 import {
 	handleGraphqlError,
@@ -148,9 +148,7 @@ export const quickSubmission: React.FC<quickSubmissionProps> = ({}) => {
 										await handleGraphqlError(response, setAlert);
 									} else if (response.data?.createHack) {
 										await handleGraphqlSuccess(
-											response,
 											setAlert,
-											"createHack",
 											"successfully created a submission!"
 										);
 										router.push("/my-submissions");
