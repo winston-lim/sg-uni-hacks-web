@@ -21,8 +21,8 @@ import { SizedBox } from "../components/layout/SizedBox";
 import { Main } from "../components/layout/Main";
 import { BasicFooter } from "../components/layout/BasicFooter";
 import { DarkModeSwitch } from "../components/icons/DarkModeSwitch";
-import { ColorConfig } from "../types/default";
 import { LoginValidationSchema } from "../utils/validationSchemas";
+import { ColorConfig } from "../types/ColorConfig";
 
 export const Login: React.FC<{}> = ({}) => {
 	const router = useRouter();
