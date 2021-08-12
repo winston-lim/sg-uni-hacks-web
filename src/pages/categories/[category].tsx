@@ -1,5 +1,4 @@
 import { Button, Flex, Heading, useColorMode, Tag } from "@chakra-ui/react";
-import { GetStaticProps, GetStaticPropsContext } from "next";
 import { withUrqlClient } from "next-urql";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
@@ -11,16 +10,14 @@ import { Header } from "../../components/layout/Header";
 import { Main } from "../../components/layout/Main";
 import { SizedBox } from "../../components/layout/SizedBox";
 import { SizedWrapper } from "../../components/layout/SizedWrapper";
+import { fallbackCoverImageUrl } from "../../constants/fallbackCoverImageUrl";
 import {
 	useCurrentUserQuery,
 	useVerifiedHacksByCategoryQuery,
 } from "../../generated/graphql";
-import { ColorConfig, fallbackBackgroundUrl } from "../../types/default";
+import { ColorConfig } from "../../types/ColorConfig";
 import { createUrqlClient } from "../../utils/createUrqlClient";
-import {
-	categoryToColorMapping,
-	mapCategoryToColor,
-} from "../../utils/mapCategoryToColor";
+import { mapCategoryToColor } from "../../utils/mapCategoryToColor";
 
 interface EducationPageProps {}
 
@@ -99,7 +96,7 @@ const EducationPage: React.FC<EducationPageProps> = ({}) => {
 					likes={hack.points}
 					voteStatus={hack.voteStatus!}
 					updatedAt={hack.updatedAt}
-					coverPhoto={hasCoverImage ? links.otherLinks : fallbackBackgroundUrl}
+					coverPhoto={hasCoverImage ? links.otherLinks : fallbackCoverImageUrl}
 					key={hack.id}
 					isLast={hacks![hacks!.length - 1] === hack}
 					isLoggedIn={isLoggedIn}
