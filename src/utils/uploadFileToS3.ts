@@ -1,3 +1,4 @@
+//accepts a list of Files, supporting multiple file uploads to S3
 export const uploadFileToS3 = async (files: File[], userId: string) => {
 	let formData = new FormData();
 	files.forEach((file) => formData.append("files", file));

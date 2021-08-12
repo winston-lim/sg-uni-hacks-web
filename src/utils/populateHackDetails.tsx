@@ -2,8 +2,10 @@ import { Box, Text } from "@chakra-ui/react";
 import React from "react";
 import { Hack } from "../generated/graphql";
 
+//Returns an array of Text components each containing 'field: value' of a specific graphql query response data, in this case, it accepts only a Hack
 export const populateHackDetails = (hack: Hack): JSX.Element[] => {
 	const props = Object.keys(hack) as string[];
+	//filters fields that are not required
 	const filteredProps = props.filter((prop) => {
 		if (
 			prop === "__typename" ||
@@ -16,7 +18,8 @@ export const populateHackDetails = (hack: Hack): JSX.Element[] => {
 		}
 		return true;
 	});
-	console.log("filteredProps: ", filteredProps);
+	//Certain field values cannot be directly placed as children of React components such as null
+	//Instead, we parse them to a string or other forms
 	const sanitizeHackData = (propName: any) => {
 		const data = (hack as any)[propName];
 		if (propName === "body") {
@@ -39,6 +42,5 @@ export const populateHackDetails = (hack: Hack): JSX.Element[] => {
 			</Box>
 		);
 	});
-	console.log(content);
 	return content;
 };
