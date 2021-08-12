@@ -7,9 +7,7 @@ import {
 	Flex,
 	Heading,
 	useColorMode,
-	Text,
 } from "@chakra-ui/react";
-import { ReactJSXElement } from "@emotion/react/types/jsx-namespace";
 import { Formik, Form } from "formik";
 import { withUrqlClient } from "next-urql";
 import { useRouter } from "next/router";
@@ -26,7 +24,7 @@ import {
 	useHackQuery,
 	useUpdateHackMutation,
 } from "../../generated/graphql";
-import { ColorConfig } from "../../types/default";
+import { ColorConfig } from "../../types/ColorConfig";
 import { createUrqlClient } from "../../utils/createUrqlClient";
 import {
 	handleGraphqlError,
@@ -88,7 +86,7 @@ export const UpdatePage: React.FC<UpdatePageProps> = ({}) => {
 								initialValues={{
 									body: "",
 								}}
-								onSubmit={async (values, { setErrors }) => {
+								onSubmit={async (values) => {
 									const { body } = values;
 									const hackInput: UpdateHackInput = {};
 									if (body === "") {
@@ -104,9 +102,7 @@ export const UpdatePage: React.FC<UpdatePageProps> = ({}) => {
 										await handleGraphqlError(response, setAlert);
 									} else if (response.data?.updateHack) {
 										await handleGraphqlSuccess(
-											response,
 											setAlert,
-											"updateHack",
 											"successfully updated a submission!"
 										);
 										router.push("/submissions");
