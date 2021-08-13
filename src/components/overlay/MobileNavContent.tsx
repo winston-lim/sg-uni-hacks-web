@@ -4,7 +4,6 @@ import {
 	Button,
 	Drawer,
 	DrawerBody,
-	DrawerCloseButton,
 	DrawerContent,
 	DrawerFooter,
 	DrawerHeader,
@@ -22,7 +21,6 @@ import { OperationResult } from "urql";
 import { CurrentUserQuery } from "../../generated/graphql";
 import { DrawerItem } from "../data-display/DrawerItem";
 import { DarkModeSwitch } from "../icons/DarkModeSwitch";
-import { SizedBox } from "../layout/SizedBox";
 
 interface MobileNavContentProps {
 	isOpen: boolean;
