@@ -18,7 +18,7 @@ import { Header } from "../components/layout/Header";
 import { Main } from "../components/layout/Main";
 import { ResponsiveWrapper } from "../components/layout/ResponsiveWrapper";
 import { SizedBox } from "../components/layout/SizedBox";
-import { ColorConfig } from "../types/default";
+import { ColorConfig } from "../types/ColorConfig";
 import { createUrqlClient } from "../utils/createUrqlClient";
 
 interface aboutPageProps {}
