@@ -1,15 +1,13 @@
 import {
 	FormControl,
 	FormLabel,
-	Input,
 	FormErrorMessage,
-	Textarea,
-	useColorMode,
 	Select,
 } from "@chakra-ui/react";
 import { useField } from "formik";
 import React, { InputHTMLAttributes } from "react";
-import { Category, ColorConfig } from "../../types/default";
+import { Category } from "../../types/Category";
+import { ColorConfig } from "../../types/ColorConfig";
 
 type SelectFieldProps = InputHTMLAttributes<HTMLInputElement> & {
 	name: string;

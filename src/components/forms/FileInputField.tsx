@@ -3,20 +3,16 @@ import {
 	FormLabel,
 	Input,
 	FormErrorMessage,
-	Textarea,
-	useColorMode,
 	InputGroup,
 	InputLeftElement,
 	Icon,
-	Button,
-	useBreakpointValue,
 } from "@chakra-ui/react";
 import { useField } from "formik";
 import React, { InputHTMLAttributes, useEffect } from "react";
 import { useState } from "react";
 import { useRef } from "react";
 import { FaFile } from "react-icons/fa";
-import { ColorConfig } from "../../types/default";
+import { ColorConfig } from "../../types/ColorConfig";
 
 type FileInputFieldProps = InputHTMLAttributes<HTMLInputElement> & {
 	name: string;

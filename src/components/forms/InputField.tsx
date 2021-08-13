@@ -4,11 +4,10 @@ import {
 	Input,
 	FormErrorMessage,
 	Textarea,
-	useColorMode,
 } from "@chakra-ui/react";
 import { useField } from "formik";
 import React, { InputHTMLAttributes } from "react";
-import { ColorConfig } from "../../types/default";
+import { ColorConfig } from "../../types/ColorConfig";
 
 type InputFieldProps = InputHTMLAttributes<HTMLInputElement> & {
 	name: string;
