@@ -1,7 +1,7 @@
 import { Heading } from "@chakra-ui/react";
 
 import React from "react";
-import { DefaultSizeVariants } from "../../types/default";
+import { DefaultSizeVariants } from "../../types/DefaultSizeVariants";
 
 interface HeadingProps {
 	title: string;
