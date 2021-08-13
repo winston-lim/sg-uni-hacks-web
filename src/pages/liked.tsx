@@ -10,8 +10,9 @@ import { Header } from "../components/layout/Header";
 import { Main } from "../components/layout/Main";
 import { SizedBox } from "../components/layout/SizedBox";
 import { SizedWrapper } from "../components/layout/SizedWrapper";
+import { fallbackCoverImageUrl } from "../constants/fallbackCoverImageUrl";
 import { useUserLikedHacksQuery } from "../generated/graphql";
-import { ColorConfig, fallbackBackgroundUrl } from "../types/default";
+import { ColorConfig } from "../types/ColorConfig";
 import { createUrqlClient } from "../utils/createUrqlClient";
 import { useIsAuth } from "../utils/useIsAuth";
 
@@ -71,7 +72,7 @@ export const LikedPage: React.FC<LikedPageProps> = ({}) => {
 					likes={hack.points}
 					voteStatus={hack.voteStatus!}
 					updatedAt={hack.updatedAt}
-					coverPhoto={hasCoverImage ? links.otherLinks : fallbackBackgroundUrl}
+					coverPhoto={hasCoverImage ? links.otherLinks : fallbackCoverImageUrl}
 					key={hack.id}
 					isLast={hacks![hacks!.length - 1] === hack}
 					isLoggedIn={!!user}
