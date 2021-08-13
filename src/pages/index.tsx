@@ -14,8 +14,9 @@ import {
 	useVerifiedHacksBySearchTermQuery,
 } from "../generated/graphql";
 import { HackItem } from "../components/data-display/HackItem";
-import { ColorConfig, fallbackBackgroundUrl } from "../types/default";
 import { SideBar } from "../components/data-display/SideBar";
+import { fallbackCoverImageUrl } from "../constants/fallbackCoverImageUrl";
+import { ColorConfig } from "../types/ColorConfig";
 
 const Index = () => {
 	const [variables, setVariables] = useState({
@@ -83,7 +84,7 @@ const Index = () => {
 					duration={hack.duration}
 					likes={hack.points}
 					updatedAt={hack.updatedAt}
-					coverPhoto={hasCoverImage ? links.otherLinks : fallbackBackgroundUrl}
+					coverPhoto={hasCoverImage ? links.otherLinks : fallbackCoverImageUrl}
 					voteStatus={hack.voteStatus!}
 					key={hack.id}
 					isLast={hacks![hacks!.length - 1] === hack}
