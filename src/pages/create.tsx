@@ -28,7 +28,7 @@ import dynamic from "next/dynamic";
 import { EditorProps } from "../components/data-display/Editor";
 import { useIsAuth } from "../utils/useIsAuth";
 import { useRouter } from "next/router";
-import { ColorConfig } from "../types/default";
+import { ColorConfig } from "../types/ColorConfig";
 const Create = () => {
 	useIsAuth();
 	const router = useRouter();
