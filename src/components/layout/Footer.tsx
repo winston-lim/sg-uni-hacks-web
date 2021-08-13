@@ -1,4 +1,4 @@
-import { Box, Flex, useColorMode } from "@chakra-ui/react";
+import { Box, useColorMode } from "@chakra-ui/react";
 import React from "react";
 
 export const Footer = (props: any) => {

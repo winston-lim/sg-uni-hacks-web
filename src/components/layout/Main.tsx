@@ -1,12 +1,4 @@
-import {
-	BackgroundProps,
-	Box,
-	ColorProps,
-	Flex,
-	Spacer,
-	Text,
-	useColorMode,
-} from "@chakra-ui/react";
+import { Box, Flex, useColorMode } from "@chakra-ui/react";
 import { ReactJSXElement } from "@emotion/react/types/jsx-namespace";
 import React, { useEffect, useState } from "react";
 import { Filler } from "./Filler";

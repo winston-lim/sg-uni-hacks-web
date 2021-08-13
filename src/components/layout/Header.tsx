@@ -132,7 +132,7 @@ export const Header: React.FC<HeaderProps> = ({
 	const colors = { light: "white", dark: "#171923" };
 	const bg = colors[colorMode];
 	const ref = React.useRef<HTMLHeadingElement>(null);
-	const [y, setY] = React.useState(0);
+	const [y, _] = React.useState(0);
 	const { height = 0 } = ref.current?.getBoundingClientRect() ?? {};
 
 	const { scrollY } = useViewportScroll();
