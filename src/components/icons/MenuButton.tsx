@@ -1,4 +1,4 @@
-import { Drawer, Icon, IconButton } from "@chakra-ui/react";
+import { Icon, IconButton } from "@chakra-ui/react";
 import React from "react";
 import { FaBars } from "react-icons/fa";
 
