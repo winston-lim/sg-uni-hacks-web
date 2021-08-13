@@ -21,12 +21,12 @@ import { SizedBox } from "../components/layout/SizedBox";
 import { Main } from "../components/layout/Main";
 import { BasicFooter } from "../components/layout/BasicFooter";
 import { DarkModeSwitch } from "../components/icons/DarkModeSwitch";
-import { ColorConfig } from "../types/default";
 import {
 	handleGraphqlError,
 	handleGraphqlSuccess,
 } from "../utils/handleGraphqlResponse";
 import { ForgetPasswordValidationSchema } from "../utils/validationSchemas";
+import { ColorConfig } from "../types/ColorConfig";
 
 export const ForgetPassword: React.FC<{}> = ({}) => {
 	const router = useRouter();
@@ -79,9 +79,7 @@ export const ForgetPassword: React.FC<{}> = ({}) => {
 									}
 								} else if (response.data?.forgotPassword) {
 									await handleGraphqlSuccess(
-										response,
 										setAlert,
-										"forgotPassword",
 										"we will send you an email if the email is valid"
 									);
 									router.push("/");
