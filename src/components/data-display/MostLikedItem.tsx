@@ -1,6 +1,6 @@
 import { HStack, Stack, Text, Image, Link, Flex } from "@chakra-ui/react";
 import React from "react";
-import { ColorConfig } from "../../types/default";
+import { ColorConfig } from "../../types/ColorConfig";
 
 interface MostLikedItemProps {
 	id: string;
@@ -15,7 +15,6 @@ interface MostLikedItemProps {
 }
 
 export const MostLikedItem: React.FC<MostLikedItemProps> = ({
-	id,
 	title,
 	category,
 	body,
@@ -45,7 +44,7 @@ export const MostLikedItem: React.FC<MostLikedItemProps> = ({
 					{date.toLocaleDateString()} - {duration} min read
 				</Text>
 				<Flex justify="flex-end" w="100%">
-					<Link color="green.500" href={`/posts/${id}`}>
+					<Link color="green.500" href={`/posts/${body}`}>
 						<u>View</u>
 					</Link>
 				</Flex>

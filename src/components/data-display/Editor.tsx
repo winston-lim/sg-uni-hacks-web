@@ -17,14 +17,14 @@ import React from "react";
 import { useState } from "react";
 import { EditorContainer } from "../layout/EditorContainer";
 import { BackgroundProps } from "@chakra-ui/react";
-import { Category, defaultEditorData } from "../../types/default";
 import { useCreateHackMutation } from "../../generated/graphql";
 import { NextRouter } from "next/router";
-import { delay } from "../../utils/delay";
 import {
 	handleGraphqlError,
 	handleGraphqlSuccess,
 } from "../../utils/handleGraphqlResponse";
+import { defaultEditorData } from "../../constants/defaultEditorData";
+import { Category } from "../../types/Category";
 
 const EDITOR_JS_TOOLS = {
 	embed: Embed,
@@ -75,9 +75,7 @@ export const Editor: React.FC<EditorProps> = ({
 			await handleGraphqlError(response, setAlert);
 		} else if (response.data?.createHack) {
 			await handleGraphqlSuccess(
-				response,
 				setAlert,
-				"createHack",
 				"sucessfully created a full submission"
 			);
 			router.push("/my-submissions");

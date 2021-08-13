@@ -17,9 +17,8 @@ import {
 import React from "react";
 import { CheckCircleIcon, SmallCloseIcon } from "@chakra-ui/icons";
 import { OperationResult } from "urql";
-import { ColorConfig } from "../../types/default";
 import { delay } from "../../utils/delay";
-import router, { NextRouter } from "next/router";
+import { ColorConfig } from "../../types/ColorConfig";
 
 interface RowItemProps {
 	title: string;

@@ -1,4 +1,3 @@
-import { CloseIcon, SmallCloseIcon } from "@chakra-ui/icons";
 import {
 	Box,
 	Button,
@@ -12,10 +11,10 @@ import {
 	Text,
 } from "@chakra-ui/react";
 import { NextRouter } from "next/router";
-import React, { useState } from "react";
+import React from "react";
 import { FaHeart } from "react-icons/fa";
-import { useCurrentUserQuery, useVoteMutation } from "../../generated/graphql";
-import { ColorConfig } from "../../types/default";
+import { useVoteMutation } from "../../generated/graphql";
+import { ColorConfig } from "../../types/ColorConfig";
 import { mapCategoryToColor } from "../../utils/mapCategoryToColor";
 import { SizedBox } from "../layout/SizedBox";
 

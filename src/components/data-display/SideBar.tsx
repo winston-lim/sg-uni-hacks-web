@@ -14,8 +14,9 @@ import {
 } from "@chakra-ui/react";
 import router from "next/router";
 import React from "react";
+import { fallbackCoverImageUrl } from "../../constants/fallbackCoverImageUrl";
 import { useMostLikedHacksQuery } from "../../generated/graphql";
-import { ColorConfig, fallbackBackgroundUrl } from "../../types/default";
+import { ColorConfig } from "../../types/ColorConfig";
 import {
 	categoryToColorMapping,
 	mapCategoryToColor,
@@ -53,7 +54,7 @@ export const SideBar: React.FC<SideBarProps> = ({ colorConfig }) => {
 							updatedAt={hack.updatedAt}
 							colorConfig={colorConfig}
 							coverImage={
-								hasCoverImage ? links.otherLinks : fallbackBackgroundUrl
+								hasCoverImage ? links.otherLinks : fallbackCoverImageUrl
 							}
 						/>
 					);
